@@ -1,0 +1,9 @@
+In Python, 
+You can print the text by using print()
+You can ask the users whatever you want and can use the answer with your work
+You can change the the words to captial or small letters you want 
+You can check the conditions by using if-elif-else statement
+You can create, modify the list and dictionaries 
+You can create function and class to make more simplify your program 
+You can modify, read the txt file from Python 
+You can use lots of libraries in Python
