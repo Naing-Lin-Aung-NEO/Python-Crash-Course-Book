@@ -1,9 +1,9 @@
 # Reading from a File 
 
-from pathlib import Path
+# from pathlib import Path
 
-path = Path('/home/user/Desktop/python/python_work/python_basics/pi.txt')
-contents = path.read_text().rstrip()
+# path = Path('/home/user/Desktop/python/python_work/python_basics/pi.txt')
+# contents = path.read_text().rstrip()
 # print(contents)
 
 # -----------------------------------------------------------------------------
@@ -96,26 +96,69 @@ contents = path.read_text().rstrip()
 # Learning C 
 
 
-from pathlib import Path 
+# from pathlib import Path 
 
-path = Path('/home/user/Desktop/python/python_work/python_basics/learning_py.txt')
-contents = path.read_text()
-# print(contents)
+# path = Path('/home/user/Desktop/python/python_work/python_basics/learning_py.txt')
+# contents = path.read_text()
+# # print(contents)
 
-lines = contents.splitlines()
-for line in lines:
-    c_lan = line.replace('Python', 'C')
-    print(c_lan)
+# lines = contents.splitlines()
+# for line in lines:
+#     c_lan = line.replace('Python', 'C')
+#     print(c_lan)
 
 # -----------
 
 # Simpler Code 
 
-from pathlib import Path 
+# from pathlib import Path 
 
-path = Path('/home/user/Desktop/python/python_work/python_basics/learning_py.txt')
-contents = path.read_text()
-# print(contents)
+# path = Path('/home/user/Desktop/python/python_work/python_basics/learning_py.txt')
+# contents = path.read_text()
+# # print(contents)
 
-for line in contents.splitlines():
-    print(line)
+# for line in contents.splitlines():
+#     print(line)
+
+# Writing to a File 
+
+# Writing a Single Line 
+
+# from pathlib import Path 
+
+# path = Path('/home/user/Desktop/python/python_crash_course/python_basics/programming.txt')
+# path.write_text('I love programming.')
+
+# # Writing Multiple Lines 
+
+# contents = "I love programming.\n"
+# contents += "I love creating new games.\n"
+# contents += "I also love working with data.\n"
+
+# path.write_text(contents)
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+# Guest
+
+# from pathlib import Path 
+
+# path = Path('python_basics/guest.txt')
+# guests = []
+
+
+# while True:
+#     print("\nEnter 'q' if you want to stop!")
+#     guest_name = input('What is your name? ')
+
+#     if guest_name == 'q':
+#         break
+
+#     guests.append(guest_name.title())
+
+# all_guests = "The name of the guests are:\n"
+# for guest in guests:
+#     all_guests += f"{guest}\n"
+    
+# path.write_text(all_guests)
