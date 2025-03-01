@@ -415,17 +415,224 @@
 
 
 
-from pathlib import Path
-import json 
+# from pathlib import Path
+# import json 
 
-path = Path('username.json')
-if path.exists():
-    contents = path.read_text()
-    username = json.loads(contents)
-    print(f"Welcome back, {username}!")
-else:
-    username = input("What is your name? ")
-    contents = json.dumps(username)
-    path.write_text(contents)
+# path = Path('username.json')
+# if path.exists():
+#     contents = path.read_text()
+#     username = json.loads(contents)
+#     print(f"Welcome back, {username}!")
+# else:
+#     username = input("What is your name? ")
+#     contents = json.dumps(username)
+#     path.write_text(contents)
 
-    print(f"We'll remember you when you come back, {username}!")
+#     print(f"We'll remember you when you come back, {username}!")
+
+# -----------------------------------------------------------------------------
+
+# Refactoring 
+
+# from pathlib import Path 
+# import json
+
+# def greet_user():
+#     """Greet user by name."""
+#     path = Path('username.json')
+#     if path.exists():
+#         contents = path.read_text()
+#         username = json.loads(contents)
+#         print(f"Welcome back, {username}!")
+#     else:
+#         username = input("What is your name? ")
+#         contents = json.dumps(username)
+#         path.write_text(contents)
+#         print(f"We'll remember you when you come back, {username}")
+
+# greet_user()
+
+# ---------------
+
+# from pathlib import Path
+# import json
+
+# def get_stored_username(path):
+#     """Get stored username if available."""
+#     if path.exists():
+#         contents = path.read_text()
+#         username = json.loads(contents)
+#         return username
+#     else:
+#         return None
+
+# def greet_user():
+#     """Greet the user by name."""
+#     path = Path("username.json")
+#     username = get_stored_username(path)
+#     if username:
+#         print(f"Welcome back, {username}!")
+#     else:
+#         username = input("What is your name? ")
+#         contents = json.dumps(username)
+#         path.write_text(contents)
+#         print(f"We'll remember you when you come back, {username}!")
+
+# greet_user()
+
+# ----------------
+
+# from pathlib import Path
+# import json 
+
+# def get_stored_username(path):
+#     """Get stored username if available."""
+#     if path.exists():
+#         contents = path.read_text()
+#         username = json.loads(contents)
+#         return username
+#     else:
+#         return None 
+
+# def get_new_username(path):
+#     """Prompt for a new username."""
+#     username = input("What is your name? ")
+#     contents = json.dumps(username)
+#     path.write_text(contents)
+#     return username
+
+# def greet_user():
+#     """Greet user by name."""
+#     path = Path("username.json")
+#     username = get_stored_username(path)
+#     if username:
+#         print(f"Welcome back, {username}")
+#     else:
+#         username = get_new_username(path)
+#         print(f"We'll remember you when you come back, {username}!") 
+
+# greet_user()   
+
+# -----------------------------------------------------------------------------
+
+# Exercises
+
+# Favorite Number 
+
+# from pathlib import Path 
+# import json 
+
+# path = Path("favorite_number.json")
+
+# def get_fav_number():
+#     fav_number = input("What is your favorite number? ")
+#     contents = json.dumps(fav_number)
+#     path.write_text(contents)
+
+# def show_fav_number():
+#     contents = path.read_text()
+#     fav_number = json.loads(contents)
+#     print(f"I know your favorite number. It's {fav_number}!")
+
+# get_fav_number()
+# show_fav_number()
+
+
+# -----------------------------------------------------------------------------
+
+
+# Favorite Number Remembered
+
+# from pathlib import Path 
+# import json 
+
+# def get_stored_fav_number(path):
+#     if path.exists():
+#         contents = path.read_text()
+#         fav_number = json.loads(contents)
+#         return fav_number
+#     else:
+#         return None 
+
+# def get_new_fav_number(path):
+#     fav_number = input("What is your favorite number? ")
+#     contents = json.dumps(fav_number)
+#     path.write_text(contents)
+#     return fav_number
+
+# def show_fav_number():
+#     path = Path("favorite_number.json")
+#     fav_number = get_stored_fav_number(path)
+#     if fav_number:
+#         print(f"I know your favorite number! It's {fav_number}!")
+#     else:
+#         fav_number = get_new_fav_number(path)
+#         print(f"Your fav number is {fav_number}!")
+
+# show_fav_number()
+
+# -----------------------------------------------------------------------------
+
+# User Dictionary 
+
+# from pathlib import Path 
+# import json
+
+# def get_info(**user):
+#     user['name'] = input("What is your name? ")
+#     user['age'] = input("What is your age? ")
+#     user['job'] = input("What do you do? ")
+#     return user
+
+# path = Path('user.json')
+
+
+# def add_user():
+#     user = get_info()
+#     contents = json.dumps(user)
+#     path.write_text(contents)
+
+# def show_user_info():
+#     contents = path.read_text()
+#     user = json.loads(contents)
+#     print(user)
+
+# add_user()
+# show_user_info()
+
+# -----------------------------------------------------------------------------
+
+# Verify User 
+
+# from pathlib import Path 
+# import json 
+
+# def get_stored_username(path):
+#     if path.exists():
+#         contents = path.read_text()
+#         username = json.loads(contents)
+#         return username
+#     else:
+#         return None 
+    
+# def get_new_username(path):
+#     username = input("What is your name? ")
+#     contents = json.dumps(username)
+#     path.write_text(contents)
+#     return username
+
+# def greet_username():
+#     path = Path("username_ex.py")
+#     username = get_stored_username(path)
+#     if username:
+#         correct_name = input(f"Are you {username}?(yes or no) ")
+#         if correct_name == 'yes':
+#             print(f"Welcome back, {username}!")
+#         else:
+#             username = get_new_username(path)
+#             print(f"We'll remember you when you come back, {username}!")
+#     else:
+#         username = get_new_username(path)
+#         print(f"We'll remember you when you come back, {username}!")
+
+# greet_username()

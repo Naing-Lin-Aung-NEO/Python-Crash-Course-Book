@@ -1,75 +1,84 @@
-# Testing The Code 
-
-# Testing a Function 
+# Testing a Function
 
 # def get_formatted_name(first, last):
 #     """Generate a neatly formatted full name."""
-#     fullname = f"{first} {last}"
-#     return fullname.title()
+#     full_name = f"{first} {last}"
+#     return full_name.title()
 
-# print("Enter 'q' at any time to quit.")
+# print("Enter 'q' it any time to quit.")
 # while True:
-#     first = input("\nPlease give me a first name: ")
+#     first = input("\nPlease give me your first name: ")
 #     if first == 'q':
 #         break
-#     last = input("Please give me a last name: ")
+#     last = input("Please give me your last name: ")
 #     if last == 'q':
 #         break
     
 #     formatted_name = get_formatted_name(first, last)
-#     print(f"\tNeatly formatted name: {formatted_name}")
-
-# -----------------------------------------------------------------------------
+#     print(f"\tNeatly Formatted Name : {formatted_name}.")
 
 # Unit Tests and Test Cases 
 
 # -----------------------------------------------------------------------------
 
-# A passing Test 
+# A Passing Test 
 
 # def get_formatted_name(first, last):
-#     """Genterate a neatly formatted full name."""
+#     """Generate a neatly formatted name."""
 #     full_name = f"{first} {last}"
 #     return full_name.title()
 
 # def test_first_last_name():
-#     """Do names like 'janis Joplin' work?"""
+#     """Do name like 'Janis Joplin' work? """
 #     formatted_name = get_formatted_name('janis', 'joplin')
 #     assert formatted_name == 'Janis Joplin'
 
 # -----------------------------------------------------------------------------
 
-# A failing test 
+# A Failing Test 
 
 # def get_formatted_name(first, middle, last):
-#     """Generate a neatly formatted full name."""
+#     """Generate a neatly formatted name."""
 #     full_name = f"{first} {middle} {last}"
 #     return full_name.title()
 
 # def test_first_last_name():
-#     """Do names like 'Janis Joplin' work?"""
+#     """Do name like 'Janis Joplin' work?"""
 #     formatted_name = get_formatted_name('janis', 'joplin')
 #     assert formatted_name == 'Janis Joplin'
 
 # -----------------------------------------------------------------------------
 
-# Responding to a Failed Test 
+# Responding to A Failed Test 
 
 # def get_formatted_name(first, last, middle=''):
-#     """Generate a neatly formatted full name."""
+#     """Generate a neatly formatted name."""
 #     if middle:
-#         full_name = f"{first} {middle} {last}"
+#         fullname = f"{first} {middle} {last}"
 #     else:
-#         full_name = f"{first} {last}"
-#     return full_name.title()
+#         fullname = f"{first} {last}"
+#     return fullname.title()
+
 
 # def test_first_last_name():
-#     """Do names like 'Janis Joplin' work?"""
-#     formatted_name = get_formatted_name('janis', 'joplin')
-#     assert formatted_name == 'Janis Joplin'
+#     """Do name like 'Neo Lin' work?"""
+#     formatted_name = get_formatted_name('neo', 'lin')
+#     assert formatted_name == 'Neo Lin'
 
-# def test_first_middle_last_name():
-#     """Do names like 'Naing Lin Aung' work?"""
+# -----------------------------------------------------------------------------
+
+# Adding New Test 
+
+# def get_formatted_name(first, last, middle=''):
+#     """Generate a neatly formatted name."""
+#     if middle:
+#         fullname = f"{first} {middle} {last}"
+#     else:
+#         fullname = f"{first} {last}"
+#     return fullname.title()
+
+# def test_first_last_middle_name():
+#     """Do name like 'Naing Lin Aung' work? """
 #     formatted_name = get_formatted_name('naing', 'aung', 'lin')
 #     assert formatted_name == 'Naing Lin Aung'
 
@@ -77,125 +86,168 @@
 
 # Exercises 
 
-# City, Country 
+# City , Country 
 
-# def get_city_country_name(city, country):
-#     """Generate City, Country names."""
-#     names = f"{city}, {country}"
-#     return names.title()
-
-# def test_city_country():
-#     """Do names like 'Santiago, Chile' work?"""
-#     names = get_city_country_name('santiago', 'chile')
-#     assert names == 'Santiago, Chile'
-
-#     # <Passed>
-
-# -----------------------
-
-# Population 
-
-# def get_city_country_name(city, country, population):
-#     """Generate City, Country names."""
-#     names = f"{city}, {country} - population {population}"
-#     return names.title()
+# def city_country(city, country):
+#     """Generate name like this 'City, Country'."""
+#     name = f"{city}, {country}"
+#     return name.title()
 
 # def test_city_country():
-#     """Do names like 'Santiago, Chile' work?"""
-#     names = get_city_country_name('santiago', 'chile')
-#     assert names == 'Santiago, Chile'
+#     """Do name like 'Yangon, Myanmar' work?"""
+#     formatted_name = city_country('yangon', 'myanmar')
+#     assert formatted_name == 'Yangon, Myanmar'
 
-#     <Error>
+# -------------------------
+# # Population 
+# def city_country(city, country, population):
+#     name = f"{city}, {country} - population {population}"
+#     return name.title()
 
-# def get_city_country_population(city, country, population=''):
-#     """Generate City, Country and Population."""
-#     if population:
-#         names = f"{city}, {country} - population {population}"
-#     else:
-#         names = f"{city}, {country}"
-#     return names.title()
 
-# def test_city_country():
-#     """Do names like 'Santiago, Chile' work?"""
-#     names = get_city_country_population('santiago', 'chile')
-#     assert names == 'Santiago, Chile'
+# # def test_city_country():
+# #     """Do name like 'Yangon, Myanmar' work?"""
+# #     formatted_name = city_country('yangon', 'myanmar')
+# #     assert formatted_name == 'Yangon, Myanmar' ---> failed
+
 
 # def test_city_country_population():
-#     """Don names like 'Santiago, Chile - Population 500000' work?"""
-#     names = get_city_country_population('santiago', 'chile', 500000)
-#     assert names == 'Santiago, Chile - Population 500000'
+#     info = city_country('yangon', 'myanmar', '1m')
+#     assert info == 'Yangon, Myanmar - Population 1M' ---> passed 
+
 
 # -----------------------------------------------------------------------------
 
-# Testing a Class 
-
-# A variety of Assertions 
-
-# A Class to a Test 
+# A Class To Test 
 
 class AnonymousSurvey:
-    """Collect anonyomus answers to a servey questions."""
+    """Collect anonymous answers to a survey question."""
 
     def __init__(self, question):
-        """Store a question, and prepare to store responses."""
         self.question = question
         self.responses = []
-    
+
     def show_question(self):
         """Show the survey question."""
         print(self.question)
 
-    def store_responses(self, new_response):
+    def store_response(self, new_response):
         """Store a single response to the survey."""
         self.responses.append(new_response)
-
-    def show_results(self):
+    
+    def show_result(self):
         """Show all the responses that have been given."""
-        print("Survey results:")
+        print("Survey Results: ")
         for response in self.responses:
             print(f"- {response}")
 
-# # Define a question, and make a survey 
-# question = "What language did you first learn to speak? "
+
+# # Define a questions, and make a survey 
+
+# question = "What language did you first learn to speak?"
 # language_survey = AnonymousSurvey(question)
 
-# # Show the question, and store responses to the question
+
+# # Show the question, and store response to the question.
 # language_survey.show_question()
-# print("Enter 'q' to at any time to exit.\n")
+# print("Enter 'q' at any time to quit!")
 # while True:
-#     response = input(question)
-#     if response == 'q':
+#     response = input('Language: ')
+#     if response == "q":
 #         break
-#     language_survey.store_responses(response)
+#     language_survey.store_response(response)
 
-# # Show the survey results
+
+# # Show the survey results 
 # print("\nThank you to everyone who participated in the survey.")
-# language_survey.show_results()
-
+# language_survey.show_result()
 
 # -----------------------------------------------------------------------------
 
-# Testing the AnonymousSurvey Class 
+# Testing The Class
 
 # def test_store_single_response():
 #     """Test that a single response is stored properly."""
-#     question = "What language did you first learn to speak? "
+#     question = "What language did you first learn to speak?"
 #     language_survey = AnonymousSurvey(question)
-#     language_survey.store_responses('English')
+#     language_survey.store_response('English')
 #     assert 'English' in language_survey.responses
+
 
 # def test_store_three_responses():
 #     """Test that three individual responses are stored properly."""
-#     question = "What language did you first learn to speak? "
+#     question = "What language did you first learn to speak?"
 #     language_survey = AnonymousSurvey(question)
 #     responses = ['English', 'Spanish', 'Mandarin']
 #     for response in responses:
-#         language_survey.store_responses(response)
-    
+#         language_survey.store_response(response)
+
 #     for response in responses:
 #         assert response in language_survey.responses
 
 # -----------------------------------------------------------------------------
 
 # Using Fixtures 
+# import pytest 
 
+# @pytest.fixture
+# def language_survey():
+#     """A survey that will be available to all test functions."""
+#     question = "What language did you first learn to speak?"
+#     language_survey = AnonymousSurvey(question)
+#     return language_survey
+
+# def test_store_single_response(language_survey):
+#     """Test the a single respone is stored properly."""
+#     language_survey.store_response('English')
+#     assert 'English' in language_survey.responses
+
+# def test_store_three_responses(language_survey):
+#     """Test that three individual responses are stored properly."""
+#     responses = ['English', 'Spanish', 'Mandarin']
+#     for response in responses:
+#         language_survey.store_response(response)
+
+#     for response in responses:
+#         assert response in language_survey.responses
+# 
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# Employee
+
+# class Employee:
+#     """A class that describe employee info."""
+
+#     def __init__(self, first_name, last_name, annual_salary):
+#         """Initilize the attributes for employee info"""
+#         self.first_name = first_name
+#         self.last_name = last_name
+#         self.annual_salary = annual_salary
+
+#     def give_raise(self, custom_raise=''):
+#         """Raise employee salary custom or default."""
+#         if custom_raise:
+#             self.annual_salary += custom_raise
+#         else:
+#             self.annual_salary += 5000
+#         return self.annual_salary
+
+# # test
+
+# import pytest
+
+# @pytest.fixture
+# def employee():
+#     employee = Employee('aung', 'lin', 100000)
+#     return employee
+
+# def test_give_default_raise(employee):
+#     annual_salary = employee.give_raise()
+#     assert annual_salary == 105000
+
+# def test_give_custom_raise(employee):
+#     annual_salary = employee.give_raise(10000)
+#     assert annual_salary == 110000
