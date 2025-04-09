@@ -138,3 +138,88 @@ name = f"\n\t{name}"
 filename = 'python_notes.txt'
 filename = filename.removesuffix('.txt')
 # print(filename)
+
+# -----------------------------------------------------------------------------
+
+# Numbers
+
+# Integers
+
+# print(10 + 11)
+
+# print(11 - 9)
+
+# print(10 * 10)
+
+# print(100 * 2)
+
+# print(100 ** 2)
+
+# print(2+ 3*4)
+
+# print((2+3) * 4)
+
+
+# Floats 
+
+# print(0.1 + 0.2)
+
+
+# Integers and Floats 
+
+# print(1.0 + 3)
+
+
+# Underscores in Numbers
+
+# unvierse_age = 14_000_000_000
+# print(unvierse_age)
+
+
+# Multiple Assignement
+
+# x, y, z = 0, 0, 0 
+# print(x, y, z)
+
+
+# Constants 
+
+# MAX_CONNECTION = 5000
+# print(MAX_CONNECTION)
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# 2.9 Number Eight 
+
+# print(1+7)
+
+# print(10-2)
+
+# print(1.6 * 5)
+
+# print(72 / 9)
+
+
+# 2.10 Favorite Number
+
+# fav_number = 1
+# message = f"Your Favorite Number is {fav_number}!"
+# print(message)
+
+# -----------------------------------------------------------------------------
+
+# Comments 
+
+# Exercises
+
+# 2.11 Adding Comments 
+
+# -----------------------------------------------------------------------------
+
+# Zen of Python 
+
+# import this
+
+# -----------------------------------------------------------------------------
