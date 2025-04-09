@@ -185,6 +185,7 @@ names.insert(6, 'wat')
 # print(f"Would you like to have a dinner with me, {names[5].title()}?")
 # print(f"Would you like to have a dinner with me, {names[6].title()}?")
 
+# print(f"I'm inviting the {len(names)} people for the dinner!")
 
 # 3.7 Shrinking Guest List 
 
@@ -209,9 +210,119 @@ names.insert(6, 'wat')
 # print(f"You are still invited to the dinner, {names[0].title()}!")
 # print(f"You are still invited to the dinner, {names[1].title()}!")
 
+# print(f"I'm inviting the {len(names)} people for the dinner!")
+
 # del names[0]
 # del names[0]
 
 # print(names)
 
 # -----------------------------------------------------------------------------
+
+# Organizing a List 
+
+# Sorting a List Permanently with the sort() Method 
+
+cars = ['bmw', 'audi', 'toyota', 'subaru']
+cars.sort()
+# print(cars)
+
+cars.sort(reverse=True)
+# print(cars)
+
+
+# Sorting a List Temporarily with the sorted() function 
+
+cars = ['bmw', 'audi', 'toyota', 'subaru']
+
+# print("Here is the original list:")
+# print(cars)
+
+# print("\nHere is the sorted list:")
+# print(sorted(cars))
+
+# print("\nHere si the original list again:")
+# print(cars)
+
+# print(sorted(cars, reverse=True))
+
+
+# Printing a List in Reverse Order 
+
+# cars = ['bmw', 'audi', 'toyota', 'subaru']
+# print(cars)
+
+# cars.reverse()
+# print(cars)
+
+
+# Finding the Length of a List 
+
+cars = ['bmw', 'audi', 'toyota', 'subaru']
+# print(len(cars))
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# 3.8 Seeing the World 
+
+places = ['myanmar', 'thai', 'usa', 'uk', 'china']
+
+# print("Here is the orginal order:")
+# print(places)
+
+# print("\nHere is the tempo list:")
+# print(sorted(places))
+
+# print("\nHere is the original list again:")
+# print(places)
+
+# print("\nHere is the tempo reverse list:")
+# print(sorted(places, reverse=True))
+
+# print("\nHere is the original list again:")
+# print(places)
+
+# places.reverse()
+# print("\nHere is the reverse order list:")
+# print(places)
+
+# places.reverse()
+# print("\nHere is the reverse order list:")
+# print(places)
+
+# places.sort()
+# print("\nHere is the perment sort list:")
+# print(places)
+
+# places.sort()
+# print("\nHere is the perment reverse sort list:")
+# print(places)
+
+
+# 3.9 Dinner Guests //Done
+
+
+# 3.10 Every Functions
+
+# insert(index, value)
+# append(value)
+
+# pop(value)
+# pop(index, value)
+# del list[index]
+# list.remove(value)
+
+
+# sort()
+# sort(revers=True)
+# sorted(list)
+# sorted(list, reverse=True)
+# list.reverse()
+# len(list)
+
+# -----------------------------------------------------------------------------
+
+
+# Avoiding Index Errors When working with Lists 
