@@ -326,3 +326,15 @@ places = ['myanmar', 'thai', 'usa', 'uk', 'china']
 
 
 # Avoiding Index Errors When working with Lists 
+
+# Exercise
+
+# 3.11 Intentional Error 
+
+cars = ['bmw', 'audi', 'roll royce', 'lambo']
+# print(cars[5])
+
+cars = []
+# print(cars[-1])
+
+# -----------------------------------------------------------------------------
