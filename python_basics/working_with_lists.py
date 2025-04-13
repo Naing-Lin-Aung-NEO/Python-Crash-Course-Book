@@ -306,3 +306,63 @@ cubes = [cube**3 for cube in range(1,11)]
 # -----------------------------------------------------------------------------
 
 
+# Tuples
+
+dimensions = (200, 50)
+# print(dimensions[0])
+# print(dimensions[1])
+
+# dimensions[0] = 250
+# print(dimensions)
+
+
+# Looping through All Values in a Tuple 
+
+# dimensions = (200, 50)
+# for dimension in dimensions:
+#     print(dimension)
+
+
+# Writing Over a Tuple 
+
+# dimensions = (200, 50)
+# print("Original dimensions:")
+# for dimension in dimensions:
+#     print(dimension)
+
+# dimensions = (400, 100)
+# print("\nModified dimensions:")
+# for dimension in dimensions:
+#     print(dimension)
+
+# -----------------------------------------------------------------------------
+
+# Exerciese 
+
+# 4.13 Buffet 
+
+foods = ('fruits', 'chicken', 'salads', 'soups', 'seafoods')
+
+# print("Five Basic Foods For Buffet:")
+# for food in foods:
+#     print(food.title())
+
+# foods[0] = 'juices' --> error
+
+foods = ('juices', 'chicken', 'salads', 'soups', 'vegetables')
+
+# print("\n5 New Basic Foods For Buffet:")
+# for food in foods:
+#     print(food.title())
+
+
+# -----------------------------------------------------------------------------
+
+# Exericises
+
+# 4.14 PEP 8
+
+# 4.15 Code Review
+
+
+# -----------------------------------------------------------------------------
