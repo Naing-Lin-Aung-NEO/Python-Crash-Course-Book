@@ -459,3 +459,137 @@ user = 'marie'
 #     print("You really like grapes!")
 # if 'lime' in fav_fruits:
 #     print("You really like limes!")
+
+# -----------------------------------------------------------------------------
+
+# Using if Statement with Lists
+
+# Checking for Special Items 
+
+# requested_toppings = ['mushrooms', 'green peppers', 'extra cheese']
+
+# for requested_topping in requested_toppings:
+#     print(f"Adding {requested_topping}.")
+
+# print("\nFinished making your pizza!")
+
+
+# requested_toppings = ['mushrooms', 'green peppers', 'extra cheese']
+
+# for requested_topping in requested_toppings:
+#     if requested_topping == 'green peppers':
+#         print("Sorry, we are out of green peppers right now!")
+#     else:
+#         print(f"Adding {requested_topping}.")
+
+# print("\nFinished making your pizza!")
+
+
+# Checking That a List Is Not Empty
+
+# requested_toppings = []
+
+# if requested_toppings:
+#     for requested_topping in requested_toppings:
+#         print(f"Adding {requested_topping}.")
+# else:
+#     print("Are you sure you want a plain pizza?")
+
+
+# Using Multiple Lists
+
+# available_topping = ['mushrooms', 'olives', 'green peppers',
+#                      'pepperoni', 'pineapple', 'extra cheese']
+
+# requested_toppings = ['mushrooms', 'french fries', 'extra cheese']
+
+# for requested_topping in requested_toppings:
+#     if requested_topping in available_topping:
+#         print(f"Adding {requested_topping}.")
+#     else:
+#         print(f"Sorry, we are out of {requested_topping}.")
+
+# print("\nFinished making your pizza!")
+
+# -----------------------------------------------------------------------------
+
+# Exercises
+
+# 5.8 Hello Admin 
+
+# users = ['neo', 'lin', 'aung', 'jhon', 'admin', 'eun']
+
+# for user in users:
+#     if user == 'admin':
+#         print("Hello admin, would you like to see a status report?")
+#     else:
+#         print(f"Hello {user.title()}, thank you for logging in again!")
+
+
+# 5.9 No Users 
+
+# users = ['neo', 'lin', 'aung', 'jhon', 'admin', 'eun']
+# users = []
+
+# if users:
+#     for user in users:
+#         if user == 'admin':
+#             print("Hello admin, would you like to see status report?")
+#         else:
+#             print(f"Hello {user.title()}, thank you for logging in again!")
+# else:
+#     print("We need to find some users!")
+
+
+# 5.10 Checking Usernames
+
+# current_users = ['neo', 'lin', 'aung', 'jhon', 'eun']
+# new_users = ['Lin', 'boy', 'tang', 'Neo', 'eun', 'yin']
+
+
+# for new_user in new_users:
+#     if new_user.lower() in current_users:
+#         print("You will need to enter a new username!")
+#     else:
+#         print("The username is available!")
+
+
+# 5.11 Ordinal Numbers
+
+# numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# for number in numbers:
+#     if number == 1:
+#         print("First\n")
+#     elif number == 2:
+#         print("Second\n")
+#     elif number == 3:
+#         print("Third\n")
+#     elif number == 4:
+#         print("Fourth\n")
+#     elif number == 5:
+#         print("Fifth\n")
+#     elif number == 6:
+#         print("Sixth\n")
+#     elif number == 7:
+#         print("Seventh\n")
+#     elif number == 8:
+#         print("Eighth\n")
+#     elif number == 9:
+#         print("Ninth\n")
+
+# Styling Your if Statements
+
+
+# -----------------------------------------------------------------------------
+
+# Exercises
+
+# 5.12 Styling if Statement
+
+# 5.13 Your Ideas
+
+# Calculator
+
+# -----------------------------------------------------------------------------
+
