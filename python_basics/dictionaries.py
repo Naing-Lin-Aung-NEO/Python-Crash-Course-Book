@@ -160,3 +160,176 @@
 # print(f"\nsum(): {glossary['sum()']}")
 # print(f"\nrange(): {glossary['range()']}")
 # print(f"\ndictionary: {glossary['dictionary']}")
+
+# -----------------------------------------------------------------------------
+
+# Looping Through a Dictionary
+
+
+# Looping Through All Key-Value Pairs 
+
+# user_0 = {
+#     'username': 'efermi',
+#     'first': 'enrico',
+#     'last': 'fermi',
+# }
+# for key, value in user_0.items():
+#     print(f"\nKey: {key}")
+#     print(f"Value: {value}")
+
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# for name, language in favorite_languages.items():
+#     print(f"{name.title()}'s favorite language is {language.title()}.")
+
+
+# Looping Through All the Keys in a Dictionary 
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# for name in favorite_languages.keys():
+#     print(name.title())
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# friends = ['phil', 'sarah']
+
+# for name in favorite_languages.keys():
+#     print(f"Hi {name.title()}.")
+
+#     if name in friends:
+#         language = favorite_languages[name].title()
+#         print(f"\t{name.title()}, I see you love {language}.")
+
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# if 'erin' not in favorite_languages.keys():
+#     print("Erin, please take our poll!")
+
+
+# Looping Through a Dictionar's Keys in a Particular Order 
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# for name in sorted(favorite_languages.keys()):
+#     print(f"{name.title()}, thank you for taking the poll.")
+
+
+# Looping Through All Values in a Dictionary
+
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# print("The following languages have been  mentioned:")
+# for language in favorite_languages.values():
+#     print(language.title())
+
+
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# print("The following languages have been mentioned:")
+# for language in set(favorite_languages.values()):
+#     print(language.title())
+
+
+# -----------------------------------------------------------------------------
+
+# Exercises
+
+# 6.4 Glossary 2
+
+# glossary = {
+#     'print()': 'print the text',
+#     'get()': 'to avoid error while calling value through its key',
+#     'sum()': 'to add all the numbers in a list',
+#     'range()': 'to generate a series of numbers',
+#     'dictionary': 'a collection of key-vale pairs',
+#     'set()': 'to remove duplicate elements in a dictionary or a list',
+#     'sorted()': 'to sort alphabatically the elements',
+#     'keys()': 'returns keys from dictionary',
+#     'values()': 'returns values from dictionary', 
+#     'items()': 'returns key-values pairs from dictionary',
+# }
+
+# for word, meaning in sorted(glossary.items()):
+#     print(f"{word}: {meaning}")
+
+
+
+# 6.5 Rivers 
+
+# rivers = {
+#     'nile': 'egypt',
+#     'amazon': 'brazil',
+#     'yangtze': 'china',
+#     'mississippi': 'united states',
+#     'ayeyarwady': 'myanmar',
+# }
+
+# for river, country in rivers.items():
+#     print(f"The {river.title()} runs through {country.title()}.")
+
+# for river in rivers.keys():
+#     print(river.title())
+
+# for country in rivers.values():
+#     print(country.title())
+
+
+# 6.6 Polling 
+
+# favorite_languages = {
+#     'jen': 'python',
+#     'sarah': 'c',
+#     'edward': 'rust',
+#     'phil': 'python',
+# }
+
+# people = ['jen', 'edward', 'neo', 'tim', 'phil']
+
+# for person in people:
+#     if person in favorite_languages.keys():
+#         print(f"Hi, {person.title()}, thank you for taking the poll!")
+#     else:
+#         print(f"Hi {person.title()}, take the poll please!")
+
+# -----------------------------------------------------------------------------
+
