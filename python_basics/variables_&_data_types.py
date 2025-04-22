@@ -220,6 +220,6 @@ filename = filename.removesuffix('.txt')
 
 # Zen of Python 
 
-# import this
+# import thiss
 
 # -----------------------------------------------------------------------------
