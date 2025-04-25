@@ -288,25 +288,151 @@
 
 # 8.8 User Albums 
 
-def make_album(artist, title):
-    """Return a dictionary about info of music album."""
-    album = {'artist': artist, 'title': title}
-    return album
+# def make_album(artist, title):
+#     """Return a dictionary about info of music album."""
+#     album = {'artist': artist, 'title': title}
+#     return album
 
-while True:
-    print("\nTell me an artist name and album title:")
-    print("(Enter 'q' at any time to quit!)")
+# while True:
+#     print("\nTell me an artist name and album title:")
+#     print("(Enter 'q' at any time to quit!)")
 
-    artist = input('Artist: ')
-    if artist == 'q':
-        break
+#     artist = input('Artist: ')
+#     if artist == 'q':
+#         break
 
-    title = input('Title: ')
-    if title == 'q':
-        break
+#     title = input('Title: ')
+#     if title == 'q':
+#         break
 
-    album = make_album(artist, title)
-    print(album)
+#     album = make_album(artist, title)
+#     print(album)
 
 # -----------------------------------------------------------------------------
 
+# Passing a List 
+
+# def greet_user(names):
+#     """Print a simple greeting to each user in the list."""
+#     for name in names:
+#         msg = f"Hello, {name.title()}!"
+#         print(msg)
+
+# usernames = ['hannah', 'ty', 'margot']
+# greet_user(usernames)
+
+
+# Modifying a List in a Function 
+
+# # Start with some designs that need to be printed 
+# unprinted_designs = ['phone case', 'robot pendant', 'dodecahedron']
+# completed_models = []
+
+# # Simulate printing each design, until none are left 
+# # Move each design to completed_models after printing 
+# while unprinted_designs:
+#     current_design = unprinted_designs.pop()
+#     print(f"Printing model: {current_design}")
+#     completed_models.append(current_design)
+
+# # Display all completedd models 
+# print("\nThe following models have been printed:")
+# for model in completed_models:
+#     print(model)
+
+# def print_models(unprinted_designs, completed_models):
+#     """
+#     Simulate printing each design, until none are left.
+#     Move each design to completed_models after printing.
+#     """
+#     while unprinted_designs:
+#         current_design = unprinted_designs.pop()
+#         print(f"Printing: {current_design}")
+#         completed_models.append(current_design)
+
+# def show_completed_models(completed_models):
+#     print("\nThe following models have been printed:")
+#     for model in completed_models:
+#         print(model)
+
+# unprinted_designs = ['phone case', 'robot pendant', 'dodecahedron']
+# completed_models = []
+
+# print_models(unprinted_designs, completed_models)
+# show_completed_models(completed_models)
+
+
+# Preventing a Function from Modifying a List 
+
+# function_name(list_name[:])
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# 8.9 Messages 
+
+# def show_messages(messages):
+#     """Display short messages."""
+#     for message in messages:
+#         print(message.title())
+
+# messages = ['hello', 'good morning', 'good night', 'good evening', 'hi']
+# show_messages(messages)
+
+
+# 8.10 Sending Messages 
+
+# def show_messages(messages):
+#     """Display short messages."""
+#     for message in messages:
+#         print(message.title())
+
+# def send_messages(messages, sent_messages):
+#     """Move to the sent_messages."""
+#     while messages:
+#         current_message = messages.pop()
+#         sent_messages.append(current_message)
+    
+# def show_sent_messages(sent_messages):
+#     print("\nThe following messages have been sent:")
+#     for message in sent_messages:
+#         print(message)
+
+
+# messages = ['hello', 'good morning', 'good night', 'good evening', 'hi']
+# sent_messages = []
+
+# show_messages(messages)
+# send_messages(messages, sent_messages)
+# show_sent_messages(sent_messages)
+
+
+# 8.11 Archived Messages 
+
+# def show_messages(messages):
+#     """Display short messages."""
+#     for message in messages:
+#         print(message.title())
+
+# def send_messages(messages, sent_messages):
+#     """Move to the sent_messages."""
+#     while messages:
+#         current_message = messages.pop()
+#         sent_messages.append(current_message)
+    
+# def show_sent_messages(sent_messages):
+#     print("\nThe following messages have been sent:")
+#     for message in sent_messages:
+#         print(message)
+
+
+# messages = ['hello', 'good morning', 'good night', 'good evening', 'hi']
+# sent_messages = []
+
+# show_messages(messages)
+# send_messages(messages[:], sent_messages)
+# show_sent_messages(sent_messages)
+
+# print(messages)
+# print(sent_messages)
