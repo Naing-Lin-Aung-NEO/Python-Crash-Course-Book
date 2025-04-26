@@ -436,3 +436,96 @@
 
 # print(messages)
 # print(sent_messages)
+
+# -----------------------------------------------------------------------------
+
+# Passing an Arbitrary of Arguments 
+
+# def make_pizza(*toppings):
+#     """Print the list of toppings that been requested."""
+#     print(toppings)
+
+# make_pizza('pepperoni')
+# make_pizza('mushrooms', 'green peppers', 'extra cheese')
+
+
+# def make_pizza(*toppings):
+#     """Print the list of toppings that been requested."""
+#     print("\nMaking a pizza with the following toppings:")
+#     for topping in toppings:
+#         print(f"- {topping}")
+
+# make_pizza('pepperoni')
+# make_pizza('mushrooms', 'green peppers', 'extra cheese')
+
+
+# Mixing Positional and Arbitrary Arguments 
+
+# def make_pizza(size, *toppings):
+#     """Summarize the pizza we are about to make."""
+#     print(f"\nMaking a {size}-inch pizza with the following toppings:")
+#     for topping in toppings:
+#         print(f"- {topping}")
+
+# make_pizza(16, 'pepperoni')
+# make_pizza(12, 'mushrooms', 'green peppers', 'extra cheese')
+
+
+# Using Arbitrary Keyword Arguments 
+
+# def build_profile(first, last, **user_info):
+#     """Build a dictionary containing everyting we know about user."""
+#     user_info['first_name'] = first
+#     user_info['last_name'] = last
+#     return user_info
+
+# user_profile = build_profile('albert', 'einstein',
+#                               location='princeton',
+#                               field='physics')
+
+# print(user_profile)
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# 8.12 Sandwiches 
+
+# def make_sandwich(*toppings):
+#     """Summarize the sandwich we are about to make."""
+#     print("\nMaking a sandwich by the following toppings:")
+#     for topping in toppings:
+#         print(f"- {topping}")
+
+# make_sandwich('chicken', 'vege')
+# make_sandwich('french fries', 'beef', 'tomatoes')
+
+
+# 8.13 User Profile 
+
+# def build_profile(first, last, **user_info):
+#     """Build a dictionary about everyting we know about the user."""
+#     user_info['first_name'] = first
+#     user_info['last_name'] = last
+#     return user_info
+
+# my_profile = build_profile('naing', 'aung',
+#                             location='mandalay',
+#                             job='student')
+
+# print(my_profile)
+
+
+# 8.14 Cars 
+
+# def make_car(company, model, **car_info):
+#     """Build a dictionary about everything we know about the car."""
+#     car_info['company'] = company
+#     car_info['model'] = model
+#     return car_info
+
+# car = make_car('subaru', 'outback', color='blue', two_package=True)
+
+# print(car)
+
+# -----------------------------------------------------------------------------
