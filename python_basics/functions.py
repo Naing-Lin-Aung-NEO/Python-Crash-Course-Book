@@ -529,3 +529,52 @@
 # print(car)
 
 # -----------------------------------------------------------------------------
+
+
+# Storing Your Functions in Modules 
+
+# Importing an Entire Module 
+
+# import functions_module
+
+# functions_module.make_pizza(12, 'pepperoni')
+# functions_module.make_pizza(16, 'mushrooms', 'green peppers', 'extra cheese')
+
+
+# Importing Specific Functions 
+
+# from functions_module import make_pizza
+
+# make_pizza(16, 'pepperoni')
+
+
+# Using as to Give a Function an Alias 
+
+# from functions_module import make_pizza as mp 
+
+# mp(16, 'pepperoni')
+
+
+# Using as to Give a Module an Alias 
+
+# import functions_module as fm 
+
+# fm.make_pizza(16, 'pepperoni')
+
+
+# Importing All Functions in a Module 
+
+# from functions_module import *
+
+# make_pizza(16, 'pepperoni')
+
+
+# Styling Functions 
+
+# -----------------------------------------------------------------------------
+
+# Exercises 
+
+# -----------------------------------------------------------------------------
+
+
