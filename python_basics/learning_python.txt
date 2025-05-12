@@ -1,0 +1,7 @@
+I love to learn Python.
+It's really intresting programming language.
+I learned to work with the list first.
+And, I go to if statement.
+Next, I learned dictionaries.
+After that, I learned function and classes.
+I am learning files and exceptions now.
