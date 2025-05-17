@@ -70,6 +70,117 @@
 # -----------------------------------------------------------------------------
 
 # Limiting the Number of Bullets 
+# class Setting:
+#     """A class to store all settings for Alien Invasion."""
+
+#     def __init__(self):
+#         """Initilize the game's setting."""
+#         # Screen Settings 
+#         self.screen_width = 1300
+#         self.screen_height = 700
+#         self.bg_color = (230, 230, 230)
+
+#         # Ship Settings
+#         self.ship_speed = 1.5
+
+#         # Bullet Settings 
+#         self.bullet_speed = 2.0
+#         self.bullet_width = 3
+#         self.bullet_height = 15
+#         self.bullet_color = (60, 60, 60)
+#         self.bullets_allowed = 3
+
+# -----------------------------------------------------------------------------
+
+# Moving the alien right 
+# Creating Settings for fleet direction 
+    
+# class Setting:
+#     """A class to store all settings for Alien Invasion."""
+
+#     def __init__(self):
+#         """Initilize the game's setting."""
+#         # Screen Settings 
+#         self.screen_width = 1300
+#         self.screen_height = 700
+#         self.bg_color = (230, 230, 230)
+
+#         # Ship Settings
+#         self.ship_speed = 1.5
+
+#         # Bullet Settings 
+#         self.bullet_speed = 2.0
+#         self.bullet_width = 3
+#         self.bullet_height = 15
+#         self.bullet_color = (60, 60, 60)
+#         self.bullets_allowed = 3
+
+#         # Alien settings 
+#         self.alien_speed = 1.0
+#         self.fleet_drop_speed = 10
+#         # fleet direction of 1 represents right; -1 represent left.
+#         self.fleet_direction = 1
+
+# -----------------------------------------------------------------------------
+
+# Making Larger Bullets for Testing 
+
+# class Setting:
+#     """A class to store all settings for Alien Invasion."""
+
+#     def __init__(self):
+#         """Initilize the game's setting."""
+#         # Screen Settings 
+#         self.screen_width = 1300
+#         self.screen_height = 700
+#         self.bg_color = (230, 230, 230)
+
+#         # Ship Settings
+#         self.ship_speed = 1.5
+
+#         # Bullet Settings 
+#         self.bullet_speed = 2.0
+#         self.bullet_width = 300
+#         self.bullet_height = 15
+#         self.bullet_color = (60, 60, 60)
+#         self.bullets_allowed = 3
+
+#         # Alien settings 
+#         self.alien_speed = 1.0
+#         self.fleet_drop_speed = 10
+#         # fleet direction of 1 represents right; -1 represent left.
+#         self.fleet_direction = 1
+
+# Speeding Up the Bullets 
+# class Setting:
+#     """A class to store all settings for Alien Invasion."""
+
+#     def __init__(self):
+#         """Initilize the game's setting."""
+#         # Screen Settings 
+#         self.screen_width = 1300
+#         self.screen_height = 700
+#         self.bg_color = (230, 230, 230)
+
+#         # Ship Settings
+#         self.ship_speed = 1.5
+
+#         # Bullet Settings 
+#         self.bullet_speed = 2.5
+#         self.bullet_width = 3
+#         self.bullet_height = 15
+#         self.bullet_color = (60, 60, 60)
+#         self.bullets_allowed = 3
+
+#         # Alien settings 
+#         self.alien_speed = 1.0
+#         self.fleet_drop_speed = 10
+#         # fleet direction of 1 represents right; -1 represent left.
+#         self.fleet_direction = 1
+
+
+# Responding to Alien Ship Collisions 
+
 class Setting:
     """A class to store all settings for Alien Invasion."""
 
@@ -82,10 +193,17 @@ class Setting:
 
         # Ship Settings
         self.ship_speed = 1.5
+        self.ship_limit = 3
 
         # Bullet Settings 
-        self.bullet_speed = 2.0
+        self.bullet_speed = 2.5
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
+
+        # Alien settings 
+        self.alien_speed = 1
+        self.fleet_drop_speed = 10
+        # fleet direction of 1 represents right; -1 represent left.
+        self.fleet_direction = 1
