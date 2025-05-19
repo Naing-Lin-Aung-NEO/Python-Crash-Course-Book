@@ -2106,9 +2106,167 @@ import pygame
 
 # Exercises 
 
-# 13.3 Raindrops 
+# 13.3 Raindrops / 13.4 Steady Raindrops
 
-# 13.4 Steady Rain 
+# import sys 
+
+# import pygame
+# from pygame.sprite import Sprite
+
+# class Setting:
+#     """Set settings for raindrop game."""
+
+#     def __init__(self):
+#         """Initialize the attributes for the game."""
+#         self.screen_width = 1300
+#         self.screen_height = 700
+#         self.bg_color = (230, 230, 230)
+
+#         # Set the speed of raindrop 
+#         self.raindrop_speed = 1.5
+
+
+# class RainDrop(Sprite):
+#     """Create a model of raindrop."""
+
+#     def __init__(self, rd_game):
+#         """Initialize the attributes for the raindrop."""
+#         super().__init__()
+#         self.screen = rd_game.screen
+#         self.settings = rd_game.settings
+
+#         # Load the raindrop image 
+#         self.image = pygame.image.load('images/raindrop.png')
+#         self.rect = self.image.get_rect()
+
+#         # Place the raindrop from the top-left of the screen.
+#         self.rect.x = self.rect.width
+#         self.rect.y = self.rect.height
+
+#         # Store the exact vertical position
+#         self.y = float(self.rect.y)
+
+#     def check_disappeared(self):
+#         """Check if drop has disappeared off bottom of screen."""
+#         if self.rect.top > self.screen.get_rect().bottom:
+#             return True
+#         else:
+#             return False
+
+#     def update(self):
+#         """Update the raindrop position."""
+#         self.y += self.settings.raindrop_speed
+#         self.rect.y = self.y 
+
+
+# class RainDropGame():
+#     """Overall class manage game assets and behaviors."""
+
+#     def __init__(self):
+#         """Initialize the game and create the game resources."""
+#         pygame.init()
+#         self.clock = pygame.time.Clock()
+#         self.settings = Setting()
+
+#         self.screen = pygame.display.set_mode(
+#             (self.settings.screen_width, self.settings.screen_height)
+#         )
+#         pygame.display.set_caption("RainDrop Game")
+
+#         self.raindrops = pygame.sprite.Group()
+#         self._create_drops()
+
+
+#     def run_game(self):
+#         """Run the game with the main loop."""
+#         while True:
+#             self._check_events()
+#             self._update_raindrops()
+#             self._update_screen()
+#             self.clock.tick(60)
+
+    
+#     def _check_events(self):
+#         """Respond the key events and mouse presses."""
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 sys.exit()
+#             elif event.type == pygame.KEYDOWN:
+#                 self._check_keydown_events(event)
+                
+    
+#     def _check_keydown_events(self, event):
+#         """Respond to key presses."""
+#         if event.key == pygame.K_q:
+#             sys.exit()
+
+    
+#     def _create_drops(self):
+#         """Create a sky full of raindrops."""
+#         drop = RainDrop(self)
+#         drop_width, drop_height = drop.rect.size
+
+#         current_x, current_y = drop_width, drop_height
+#         while current_y < (self.settings.screen_height - 2 * drop_height):
+#             while current_x < (self.settings.screen_width - 2 * drop_width):
+#                 self._create_drop(current_x, current_y)
+#                 current_x += 2 * drop_width
+
+#             # Finished a row and reset the current_x and set new y position
+#             current_x = drop_width
+#             current_y += 2 * drop_height
+
+
+#     def _create_drop(self, current_x, current_y):
+#         """Create the drop and place in the grid."""
+#         new_drop = RainDrop(self)
+#         new_drop.y = current_y
+#         new_drop.rect.x = current_x
+#         new_drop.rect.y = current_y 
+#         self.raindrops.add(new_drop)
+
+#     def _create_new_row(self):
+#         """Create a new row after the row disappaered."""
+#         drop = RainDrop(self)
+#         drop_width, drop_height = drop.rect.size
+
+#         current_x = drop_width
+#         current_y = -1 * drop_height
+#         while current_x < (self.settings.screen_width - 2 * drop_width):
+#             self._create_drop(current_x, current_y)
+#             current_x += 2 * drop_width
+
+#     def _update_raindrops(self):
+#         """Update drop positions, and look for drops that have disappeared."""
+#         self.raindrops.update()
+
+#         # Assume we won't make new drops 
+#         make_new_drops = False
+#         for drop in self.raindrops.copy():
+#             if drop.check_disappeared():
+#                 # Remove this drop, and we'll need to make new drops
+#                 self.raindrops.remove(drop)
+#                 make_new_drops = True
+        
+#         # Make a new row of drops if needed.
+#         if make_new_drops:
+#             self._create_new_row()
+
+
+#     def _update_screen(self):
+#         """Update the images on the screen, and flip to new screen."""
+#         self.screen.fill(self.settings.bg_color)
+#         self.raindrops.draw(self.screen)
+        
+#         pygame.display.flip()
+        
+
+
+# if __name__ == '__main__':
+#     """Make a game instance and run the game."""
+#     rd_game = RainDropGame()
+#     rd_game.run_game()
+
 
 # -----------------------------------------------------------------------------
 
@@ -2584,6 +2742,288 @@ import pygame
 # Exercises
 
 # 13.5 Sideways Shooter Part 2 
+
+import sys
+
+from pygame.sprite import Sprite
+class Setting:
+    """Make setting for the game rocket."""
+    
+    def __init__(self):
+        """Initialize game settings."""
+        # Screen Setting 
+        self.screen_width = 1200
+        self.screen_height = 700
+        self.bg_color = (230, 230, 230)
+
+        # Ship Setting 
+        self.ship_speed = 1.5
+
+        # Bullet Settings 
+        self.bullet_speed = 2.0
+
+        # Alien settings 
+        self.alien_speed = 1 
+        self.fleet_drop_speed = 10
+        # fleet direction of 1 represent bottom; -1 represent top 
+        self.fleet_direction = 1
+
+class Bullet(Sprite):
+    """A class manage bullets fired from the ship."""
+    
+    def __init__(self, rc_game):
+        super().__init__()
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+        
+        # Load the image and get its rect 
+        self.bullet_image = pygame.image.load('images/bullet_red.bmp')
+        self.bullet_image_size = pygame.transform.scale(self.bullet_image, (30, 25))
+        self.bullet_rect = self.bullet_image_size.get_rect()
+        self.bullet_rect.midleft = rc_game.rocket.rect.midleft
+        self.bullet_rect.x += 100
+
+        # Stor the bullet's position as a float.
+        self.x = float(self.bullet_rect.x)
+
+    def update(self):
+        """Move the bullet up the screen."""
+        # Update the exact position of the bullet.
+        self.x += self.setting.bullet_speed
+        # Update the rect position
+        self.bullet_rect.x = self.x
+    
+    def blit_bullet(self):
+        """Draw the image to the screen."""
+        self.screen.blit(self.bullet_image_size, self.bullet_rect)
+
+class Rocket:
+    """A class to manage the rocket."""
+
+    def __init__(self, rc_game):
+        """Initialize the rocket and set tis starting position."""
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+        self.screen_rect = rc_game.screen.get_rect()
+
+        # Load the iamge and ge its rect 
+        self.image = pygame.image.load('images/fighter_plane.bmp')
+        self.image_rotate = pygame.transform.rotate(self.image, -90)
+        self.image_resize = pygame.transform.scale(self.image_rotate, (125, 100))
+        self.rect = self.image_resize.get_rect()
+
+        # Start new ship at the center of the screen 
+        self.rect.midleft = self.screen_rect.midleft
+
+        # Store a float for the ship's exact vartical position
+        self.y = float(self.rect.y)
+
+        # Movement flag; start with a ship that's not moving
+        self.moving_up = False
+        self.moving_down = False
+
+    def update(self):
+        """Update the ship's position based on the movement flag."""
+        # Update the ship's x and y value, not the rect 
+        if self.moving_up and self.rect.top > 0:
+            self.y -= self.setting.ship_speed
+        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+            self.y += self.setting.ship_speed
+
+        # Update rect object from slef.x
+        self.rect.y = self.y 
+
+    def center_ship(self):
+        """Center the ship on the screen."""
+        self.rect.midleft = self.screen_rect.midleft
+        self.y = float(self.rect.y)
+    
+    def blitme(self):
+        """Draw the image at its current loaction."""
+        self.screen.blit(self.image_resize, self.rect)
+
+
+
+class Alien(Sprite):
+    """A class to represent a single alien in the fleet."""
+
+    def __init__(self, rc_game):
+        """Initialize the alien and set its starting position."""
+        super().__init__()
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+
+        # Load the alien image and set its rect attribute 
+        self.image = pygame.image.load('images/ufo.bmp')
+        self.image = pygame.transform.scale(self.image, (75, 75))
+        self.rect = self.image.get_rect()
+
+        # Start each new alien near the top left of the screen 
+        screen_rect = self.screen.get_rect()
+        self.rect.x = screen_rect.right - self.rect.width * 2  
+        self.rect.y = self.rect.height                        
+
+
+        # Store the alien's exact vertical position
+        self.y = float(self.rect.y)
+    
+    def check_edges(self):
+        """Returen True if alien is at edge of screen."""
+        screen_rect = self.screen.get_rect()
+        return(self.rect.top <= 0) or (self.rect.bottom >= screen_rect.bottom)
+    
+    def update(self):
+        """Move the alien to the top of bottom."""
+        self.y += self.setting.alien_speed * self.setting.fleet_direction
+        self.rect.y = self.y
+        
+
+class RocketGame:
+    """Model for a rocket game and it's resources."""
+
+    def __init__(self):
+        """Initialize the game and attributes for the game."""
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.setting = Setting()
+
+        self.screen = pygame.display.set_mode((
+            self.setting.screen_width, self.setting.screen_height))
+        self.screen_width = self.screen.get_rect().width
+        self.screen_height = self.screen.get_rect().height
+        pygame.display.set_caption('Rocket Game')
+
+        self.rocket = Rocket(self)
+        self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
+
+    def run_game(self):
+        """Start the Main Loop for the Game."""
+        while True:
+            self._check_events()
+            self.rocket.update()
+            self._update_bullet()
+            self._update_aliens()
+            self._update_screen()
+            self.clock.tick(60)
+
+    def _check_events(self):
+        """Respond to key presses."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+
+    def _check_keydown_events(self, event):
+        """Respond to key pressed."""
+        if event.key == pygame.K_UP:
+            self.rocket.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.rocket.moving_down = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _check_keyup_events(self, event):
+        """Respond to key released."""
+        if event.key == pygame.K_UP:
+            self.rocket.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.rocket.moving_down = False
+
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+
+    def _update_bullet(self):
+        # Update bullet positions
+        self.bullets.update()
+
+        # Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.bullet_rect.right >= self.screen.get_rect().right:
+                self.bullets.remove(bullet)
+            
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collisions."""
+        # Remove any bullets and aliens that have collided.
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True)
+        
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet.
+            self.bullets.empty()
+            self._create_fleet()
+    
+    def _create_fleet(self):
+        """Create a grid of aliens in columns starting at the right end."""
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+
+        screen_width = self.setting.screen_width
+        screen_height = self.setting.screen_height
+
+        # Start from right side with padding of one alien width
+        start_x = screen_width - 2 * alien_width
+
+        # Loop columns from right to left
+        current_x = start_x
+        while current_x > 0:
+            current_y = alien_height  
+            while current_y < (screen_height - alien_height):
+                self._create_alien(current_x, current_y)
+                current_y += 2 * alien_height  
+            current_x -= 2 * alien_width  
+    
+    def _create_alien(self, x, y):
+        """Create an alien and place it in the fleet."""
+        new_alien = Alien(self)
+        new_alien.y = y 
+        new_alien.rect.x = x 
+        new_alien.rect.y = y 
+        self.aliens.add(new_alien)
+
+    def _update_aliens(self):
+        """Check if the fleet is at an edge, then update positions."""
+        self._check_fleet_edges()
+        self.aliens.update()
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any alien have reached an edge."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet's direction."""
+        for alien in self.aliens.sprites():
+            alien.rect.x -= self.setting.fleet_drop_speed
+        self.setting.fleet_direction *= -1
+
+    def _update_screen(self):
+        """Draw image at the screen and flip to the new screen."""
+        self.screen.fill(self.setting.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.blit_bullet()
+        self.rocket.blitme()
+        self.aliens.draw(self.screen)
+        
+        pygame.display.flip()
+
+if __name__ == '__main__':
+    rocket = RocketGame()
+    rocket.run_game()
+
 
 # -----------------------------------------------------------------------------
 
