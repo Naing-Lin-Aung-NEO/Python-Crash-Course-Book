@@ -4045,6 +4045,281 @@ import pygame
 
 # 14. Press P to Play 
 
+# import sys 
+# from time import sleep
+# import json
+# from pathlib import Path
+
+# import pygame
+
+# from settings import Setting
+# from game_stats import GameStats
+# from scoreboard import Scoreboard
+# from button import Button
+# from ship import Ship
+# from bullet import Bullet
+# from alien import Alien
+
+
+# class AlienInvasion:
+#     """Overall class to manage game assets and behavior."""
+
+#     def __init__(self):
+#         """Initialize the game, and create game resources."""
+#         pygame.init()
+#         self.clock = pygame.time.Clock()
+#         self.settings = Setting()
+
+#         self.screen = pygame.display.set_mode(
+#             (self.settings.screen_width, self.settings.screen_height))
+#         pygame.display.set_caption("Alien Invasion")
+
+#         # Create an instance to store game statistics.
+#         # Create a Scoreboard
+#         self.stats = GameStats(self)
+#         self.sb = Scoreboard(self)
+
+#         self.ship = Ship(self)
+#         self.bullets = pygame.sprite.Group()
+#         self.aliens = pygame.sprite.Group()
+
+#         self._create_fleet()
+
+#         # Start Alien Invasion in an inactive state.
+#         self.game_active = False
+
+#         # Make the Play Button. 
+#         self.play_button = Button(self, "PLAY!")
+
+#     def run_game(self):
+#         """Start the main loop for the game."""
+#         while True:
+#             self._check_events()
+
+#             if self.game_active:
+#                 self.ship.update()
+#                 self._update_bullets()
+#                 self._update_aliens()
+
+#             self._update_screen()
+#             self.clock.tick(60)
+
+#     def _check_events(self):
+#         """Respond to keypresses and mouse events."""
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 self._close_game()
+#             elif event.type == pygame.MOUSEBUTTONDOWN:
+#                 mouse_pos = pygame.mouse.get_pos()
+#                 self._check_play_button(mouse_pos)
+#             elif event.type == pygame.KEYDOWN:
+#                 self._check_keydown_events(event)
+#             elif event.type == pygame.KEYUP:
+#                 self._check_keyup_events(event)
+
+    
+#     def _check_play_button(self, mouse_pos):
+#         """Start a new game when the player clicks Play."""
+#         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+#         if button_clicked and not self.game_active:
+#             self._start_game()
+
+
+#     def _check_keydown_events(self, event):
+#         """Respond to keypresses."""
+#         if event.key == pygame.K_RIGHT:
+#             self.ship.moving_right = True
+#         elif event.key == pygame.K_LEFT:
+#             self.ship.moving_left = True
+#         elif event.key == pygame.K_q:
+#             self._close_game()
+#         elif event.key == pygame.K_SPACE:
+#             self._fire_bullet()
+#         elif event.key == pygame.K_p:
+#             self._start_game()     
+
+#     def _check_keyup_events(self, event):
+#         """Respond to key releases."""
+#         if event.key == pygame.K_RIGHT:
+#             self.ship.moving_right = False
+#         elif event.key == pygame.K_LEFT:
+#             self.ship.moving_left = False
+
+#     def _start_game(self):
+#         """Start the game."""
+#         # Reset the game setting 
+#         self.settings.initialize_dynamic_settings()
+
+#         # Reset the game statistics 
+#         self.stats.reset_stats()
+#         self.sb.prep_score()
+#         self.sb.prep_level()
+#         self.sb.prep_ships()
+#         self.game_active = True
+#         # Hide the mosue cursor 
+#         pygame.mouse.set_visible(False)
+
+#         # Get rid of any remaining Bullets and aliens 
+#         self.bullets.empty()
+#         self.aliens.empty()
+
+#         # Create the new fleet and center the ship 
+#         self._create_fleet()
+#         self.ship.center_ship()
+
+#     def _fire_bullet(self):
+#         """Create a new bullet and add it to the bullets group."""
+#         if len(self.bullets) < self.settings.bullets_allowed:
+#             new_bullet = Bullet(self)
+#             self.bullets.add(new_bullet)
+
+#     def _update_bullets(self):
+#         """Update position of bullets and get rid of old bullets."""
+#         # Update bullet positions.
+#         self.bullets.update()
+
+#         # Get rid of bullets that have disappeared.
+#         for bullet in self.bullets.copy():
+#             if bullet.rect.bottom <= 0:
+#                 self.bullets.remove(bullet)
+        
+#         self._check_bullet_alien_collisions()
+
+#     def _check_bullet_alien_collisions(self):
+#         """Respond to bullet-alien collisions."""
+#         # Remove any bullets and aliens that have collided.
+#         collisions = pygame.sprite.groupcollide(
+#             self.bullets, self.aliens, True, True)
+        
+#         if collisions:
+#             for aliens in collisions.values():
+#                 self.stats.score += self.settings.alien_point * len(aliens)
+#             self.sb.prep_score()
+#             self.sb.check_high_score()
+        
+#         if not self.aliens:
+#             # Destroy existing bullets and create new fleet.
+#             self.bullets.empty()
+#             self._create_fleet()
+#             self.settings.increase_speed()
+
+#             self.stats.level += 1
+#             self.sb.prep_level()
+
+#     def _create_fleet(self):
+#         """Create the fleet of aliens."""
+#         # Create an alien and keep adding aliens until there's no room left.
+#         # Spacing between aliens is one alien width and one alien height.
+#         alien = Alien(self)
+#         alien_width, alien_height = alien.rect.size
+
+#         current_x, current_y = alien_width, alien_height
+#         while current_y < (self.settings.screen_height - 3 * alien_height):
+#             while current_x < (self.settings.screen_width - 2 * alien_width):
+#                 self._create_alien(current_x, current_y)
+#                 current_x += 2 * alien_width
+
+#             # Finished a row; reset x value, and increment y value.
+#             current_x = alien_width
+#             current_y += 2 * alien_height
+
+#     def _create_alien(self, x_position, y_position):
+#         """Create an alien and place it in the fleet."""
+#         new_alien = Alien(self)
+#         new_alien.x = x_position
+#         new_alien.rect.x = x_position
+#         new_alien.rect.y = y_position
+#         self.aliens.add(new_alien)
+
+#     def _update_aliens(self):
+#         """Check if the fleet is at an edge, then update positions."""
+#         self._check_fleet_edges()
+#         self.aliens.update()
+
+#         # Look for alien-ship collisions.
+#         if pygame.sprite.spritecollideany(self.ship, self.aliens):
+#             self._ship_hit()
+
+#         # Look for aliens hitting the bottom of the screen . 
+#         self._check_aliens_bottom()
+
+#     def _check_fleet_edges(self):
+#         """Respond appropriately if any alien have reached an edge."""
+#         for alien in self.aliens.sprites():
+#             if alien.check_edges():
+#                 self._change_fleet_direction()
+#                 break
+    
+#     def _change_fleet_direction(self):
+#         """Drop the entire fleet and change the fleet's direction."""
+#         for alien in self.aliens.sprites():
+#             alien.rect.y += self.settings.fleet_drop_speed
+#         self.settings.fleet_direction *= -1
+
+#     def _check_aliens_bottom(self):
+#         """Check if any aliens have reached the bottom of the screen."""
+#         for alien in self.aliens.sprites():
+#             if alien.rect.bottom >= self.settings.screen_height:
+#                 # Treat this the same as if the ship got hit.
+#                 self._ship_hit()
+#                 break
+
+#     def _ship_hit(self):
+#         """Respond to the ship being hit by an alien."""
+#         if self.stats.ships_left > 0:
+#             # Decrement ships_left and update the score board.
+#             self.stats.ships_left -= 1 
+#             self.sb.prep_ships()
+
+#             # Get rid of any remaining bullets and aliens 
+#             self.bullets.empty()
+#             self.aliens.empty()
+
+#             # Create a new fleet and center the ship 
+#             self._create_fleet()
+#             self.ship.center_ship()
+
+#             # pause
+#             sleep(0.5)
+#         else:
+#             self.game_active = False
+#             pygame.mouse.set_visible(True)
+
+#     def _update_screen(self):
+#         """Update images on the screen, and flip to the new screen."""
+#         self.screen.fill(self.settings.bg_color)
+#         for bullet in self.bullets.sprites():
+#             bullet.draw_bullet()
+#         self.ship.blitme()
+#         self.aliens.draw(self.screen)
+
+#         # Draw the score information
+#         self.sb.show_score()
+
+#         # Draw the play button if the game is inactive
+#         if not self.game_active:
+#             self.play_button.draw_button()
+
+#         pygame.display.flip()
+
+    
+#     def _close_game(self):
+#         """Restore the high score and close the game."""
+#         saved_high_score = self.stats.get_saved_high_score()
+#         if self.stats.high_score > saved_high_score:
+#             path = Path('high_score.json')
+#             contents = json.dumps(self.stats.high_score)
+#             path.write_text(contents)
+        
+#         sys.exit()
+
+
+# if __name__ == '__main__':
+#     # Make a game instance, and run the game.
+#     ai = AlienInvasion()
+#     ai.run_game()
+
+
 # 14.2 Target Practice 
 
 # -----------------------------------------------------------------------------
@@ -4299,6 +4574,510 @@ import pygame
 
 
 # 14.4 Difficulty Levels 
+
+# import sys
+# from time import sleep
+
+# import pygame
+# import pygame.font
+# from pygame.sprite import Sprite
+
+# class Setting:
+#     """Make setting for the game rocket."""
+    
+#     def __init__(self):
+#         """Initialize game settings."""
+#         # Screen Setting 
+#         self.screen_width = 1200
+#         self.screen_height = 700
+#         self.bg_color = (5, 10, 30)
+
+#         # Ship Setting 
+#         self.ship_speed = 1.5
+#         self.ship_limit = 3
+
+#         # Bullet Settings 
+#         self.bullet_speed = 2.0
+#         self.bullet_allowed = 3
+
+#         # Alien settings 
+#         self.alien_speed = 1.5
+#         self.alien_frequency = 0.008
+#         self.fleet_drop_speed = 10
+#         # fleet direction of 1 represent bottom; -1 represent top 
+#         self.fleet_direction = 1
+
+#         # How quickly the game speeds up 
+#         self.speed_scale = 1.3
+
+#         self.initialize_dynamic_settings()
+    
+#     def initialize_dynamic_settings(self):
+#         # Initialize settings that change throughout the game.
+#         self.ship_speed = 1.5
+#         self.bullet_speed = 2.0
+#         self.alien_speed = 1.5
+
+#         # Fleet direction of 1 represent botton, -1 represent top 
+
+#     def change_speed(self, speed_sacle=1.0):
+#         """Change the speed for medium, difficult mode."""
+#         self.alien_speed *= int(speed_sacle)
+#         self.ship_speed *= int(speed_sacle)
+#         self.bullet_speed *= int(speed_sacle)
+
+#     def increase_speed(self):
+#         """Increase speed setting."""
+#         self.ship_speed *= self.speed_scale
+#         self.bullet_speed *= self.speed_scale
+#         self.alien_speed *= self.speed_scale
+
+# class GameStats:
+#     """Track statistics for rocke game."""
+
+#     def __init__(self, rc_game):
+#         """Initialize statistics."""
+#         self.setting = rc_game.setting
+#         self.reset_stats()
+    
+#     def reset_stats(self):
+#         """Initialize statistics that can change during the game."""
+#         self.ships_left = self.setting.ship_limit
+
+# class Button:
+#     """A class to build buttons for the game."""
+    
+#     def __init__(self, rc_game, msg):
+#         """Initialize button attributes."""
+#         self.screen = rc_game.screen
+#         self.screen_rect = self.screen.get_rect()
+
+#         # Set the dimensions and properties of the button 
+#         self.width, self.height = 200, 50
+#         self.button_color = (40, 40, 80)
+#         self.text_color = (255, 255, 255)
+#         self.font = pygame.font.SysFont(None, 48)
+
+#         # Build the button's rect object  
+#         self.rect = pygame.Rect(0, 0 , self.width, self.height)
+
+#         # The button message needs to be prepped only once 
+#         self._prep_msg(msg)        
+    
+    
+#     def _prep_msg(self, msg):
+#         """Turn msg into a rendered image and center text"""
+#         self.msg_image = self.font.render(msg, True, 
+#                         self.text_color, self.button_color)
+#         self.msg_image_rect = self.msg_image.get_rect()
+
+#     def draw_button(self, pixels=0):
+#         """Draw blank button and then draw message."""
+#         self.rect.center = self.screen_rect.center 
+#         self.rect.centery += int(pixels)
+#         self.screen.fill(self.button_color, self.rect)
+#         self.msg_image_rect.center = self.rect.center
+#         self.screen.blit(self.msg_image, self.msg_image_rect)
+
+
+# class Bullet(Sprite):
+#     """A class manage bullets fired from the ship."""
+    
+#     def __init__(self, rc_game):
+#         super().__init__()
+#         self.screen = rc_game.screen
+#         self.setting = rc_game.setting
+        
+#         # Load the image and get its rect 
+#         self.bullet_image = pygame.image.load('images/bullet_red.bmp')
+#         self.bullet_image_size = pygame.transform.scale(self.bullet_image, (30, 25))
+#         self.rect = self.bullet_image_size.get_rect()
+#         self.rect.midleft = rc_game.rocket.rect.midleft
+#         self.rect.x += 100
+
+#         # Stor the bullet's position as a float.
+#         self.x = float(self.rect.x)
+
+#     def update(self):
+#         """Move the bullet up the screen."""
+#         # Update the exact position of the bullet.
+#         self.x += self.setting.bullet_speed
+#         # Update the rect position
+#         self.rect.x = self.x
+    
+#     def blit_bullet(self):
+#         """Draw the image to the screen."""
+#         self.screen.blit(self.bullet_image_size, self.rect)
+
+# class Rocket:
+#     """A class to manage the rocket."""
+
+#     def __init__(self, rc_game):
+#         """Initialize the rocket and set tis starting position."""
+#         self.screen = rc_game.screen
+#         self.setting = rc_game.setting
+#         self.screen_rect = rc_game.screen.get_rect()
+
+#         # Load the iamge and ge its rect 
+#         self.image = pygame.image.load('images/fighter_plane.bmp')
+#         self.image_rotate = pygame.transform.rotate(self.image, -90)
+#         self.image_resize = pygame.transform.scale(self.image_rotate, (125, 100))
+#         self.mask = pygame.mask.from_surface(self.image_resize)
+#         self.rect = self.image_resize.get_rect()
+
+
+#         # Start new ship at the center of the screen 
+#         self.rect.midleft = self.screen_rect.midleft
+
+#         # Store a float for the ship's exact vartical position
+#         self.y = float(self.rect.y)
+
+#         # Movement flag; start with a ship that's not moving
+#         self.moving_up = False
+#         self.moving_down = False
+
+#     def update(self):
+#         """Update the ship's position based on the movement flag."""
+#         # Update the ship's x and y value, not the rect 
+#         if self.moving_up and self.rect.top > 0:
+#             self.y -= self.setting.ship_speed
+#         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+#             self.y += self.setting.ship_speed
+
+#         # Update rect object from slef.x
+#         self.rect.y = self.y 
+
+#     def center_ship(self):
+#         """Center the ship on the screen."""
+#         self.rect.midleft = self.screen_rect.midleft
+#         self.y = float(self.rect.y)
+    
+#     def blitme(self):
+#         """Draw the image at its current loaction."""
+#         self.screen.blit(self.image_resize, self.rect)
+
+
+
+# class Alien(Sprite):
+#     """A class to represent a single alien in the fleet."""
+
+#     def __init__(self, rc_game):
+#         """Initialize the alien and set its starting position."""
+#         super().__init__()
+#         self.screen = rc_game.screen
+#         self.setting = rc_game.setting
+
+#         # Load the alien image and set its rect attribute 
+#         self.image = pygame.image.load('images/ufo.bmp')
+#         self.image = pygame.transform.scale(self.image, (80, 80))
+#         self.rect = self.image.get_rect()
+
+#         # Start each new alien near the top left of the screen 
+#         screen_rect = self.screen.get_rect()
+#         self.rect.x = screen_rect.right - self.rect.width * 2  
+#         self.rect.y = self.rect.height                        
+
+
+#         # Store the alien's exact vertical position
+#         self.y = float(self.rect.y)
+    
+#     def check_edges(self):
+#         """Returen True if alien is at edge of screen."""
+#         screen_rect = self.screen.get_rect()
+#         return(
+#             self.rect.top <= 0
+#             or self.rect.bottom >= screen_rect.bottom
+#             or self.rect.left <= 0
+#             or self.rect.right >= screen_rect.right
+#         )
+
+    
+#     def update(self):
+#         """Move the alien to the top of bottom."""
+#         self.y += self.setting.alien_speed * self.setting.fleet_direction
+#         self.rect.y = self.y
+
+#     def prep_ships(self):
+#         """Show how many ships are left."""
+#         heart_image = pygame.image.load('images/heart.png')
+#         self.heart_image = pygame.transform.scale(heart_image, (32, 32))
+
+#     def show_score(self):
+#         """Draw hearts, scores, and level to the scree."""
+#         self.screen.blit(self.score_image, self.score_rect)
+#         self.screen.blit(self.high_score_imgae, self.high_score_rect)
+#         self.screen.blit(self.level_image, self.level_rect)
+#         for i in range(self.setting.ships_left):
+#             self.screen.blit(self.heart_image, (10 + 1 * 40, 10))
+        
+
+# class RocketGame:
+#     """Model for a rocket game and it's resources."""
+
+#     def __init__(self):
+#         """Initialize the game and attributes for the game."""
+#         pygame.init()
+#         self.clock = pygame.time.Clock()
+#         self.setting = Setting()
+
+#         self.screen = pygame.display.set_mode((
+#             self.setting.screen_width, self.setting.screen_height))
+#         self.screen_width = self.screen.get_rect().width
+#         self.screen_height = self.screen.get_rect().height
+#         pygame.display.set_caption('Rocket Shooter')
+
+#         # Create an instance to store game statistics 
+#         self.stats = GameStats(self)
+
+#         self.rocket = Rocket(self)
+#         self.bullets = pygame.sprite.Group()
+#         self.aliens = pygame.sprite.Group()
+
+#         self._create_fleet()
+
+#         # Start Rocket shooter in an inactive state 
+#         self.game_active = False 
+#         self.speed_scale = 1.0
+#         self.mode_slected = False
+
+#         # Make the play Button 
+#         self.play_button = Button(self, "PLAY!")
+#         self.easy_button = Button(self, "Easy")
+#         self.medium_button = Button(self, "Medium")
+#         self.difficult_button = Button(self, "Difficult")
+
+#     def run_game(self):
+#         """Start the Main Loop for the Game."""
+#         while True:
+#             self._check_events()
+            
+#             if self.game_active:
+#                 self.rocket.update()
+#                 self._update_bullet()
+#                 self._update_aliens()
+            
+#             self._update_screen()
+#             self.clock.tick(60)
+
+#     def _check_events(self):
+#         """Respond to key presses."""
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 sys.exit()
+#             elif event.type == pygame.MOUSEBUTTONDOWN:
+#                 mouse_pos = pygame.mouse.get_pos()
+#                 self._check_easy_button(mouse_pos)
+#                 self._check_medium_button(mouse_pos)
+#                 self._check_difficult_button(mouse_pos)
+#                 self._check_play_button(mouse_pos)
+#             elif event.type == pygame.KEYDOWN:
+#                 self._check_keydown_events(event)
+#             elif event.type == pygame.KEYUP:
+#                 self._check_keyup_events(event)
+
+#     def _check_keydown_events(self, event):
+#         """Respond to key pressed."""
+#         if event.key == pygame.K_UP:
+#             self.rocket.moving_up = True
+#         elif event.key == pygame.K_DOWN:
+#             self.rocket.moving_down = True
+#         elif event.key == pygame.K_q:
+#             sys.exit()
+#         elif event.key == pygame.K_SPACE:
+#             self._fire_bullet()
+#         elif event.key == pygame.K_p:
+#             self._start_game()
+
+#     def _check_keyup_events(self, event):
+#         """Respond to key released."""
+#         if event.key == pygame.K_UP:
+#             self.rocket.moving_up = False
+#         elif event.key == pygame.K_DOWN:
+#             self.rocket.moving_down = False
+
+#     def _check_easy_button(self, mouse_pos):
+#         """Go into the easy mode when the player clicks Easy."""
+#         if self.easy_button.rect.collidepoint(mouse_pos) and not self.game_active:
+#             self.speed_scale = 1.0
+#             self.mode_slected = True
+
+#     def _check_medium_button(self, mouse_pos):
+#         """Go into the easy mode when the player clicks Easy."""
+#         if self.medium_button.rect.collidepoint(mouse_pos) and not self.game_active:
+#             self.speed_scale = 2.5
+#             self.mode_slected = True
+
+#     def _check_difficult_button(self, mouse_pos):
+#         """Go into the easy mode when the player clicks Easy."""
+#         if self.difficult_button.rect.collidepoint(mouse_pos) and not self.game_active:
+#             self.speed_scale = 3.5
+#             self.mode_slected = True
+    
+#     def _check_play_button(self, mouse_pos):
+#         """Start new game when the player clicks Play."""
+#         play_button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+#         if play_button_clicked and not self.game_active:
+#             self._start_game()
+        
+#     def _start_game(self):
+#         """Do this thing to restart the game."""
+#         # Reset the game setting 
+#         self.setting.initialize_dynamic_settings()
+#         self.setting.change_speed(self.speed_scale)
+
+#         # Reset the game statistics 
+#         self.stats.reset_stats()
+#         self.game_active = True
+
+#         # Hide the mouse cursor 
+#         pygame.mouse.set_visible(False)
+
+#         # Get rid of any remaining Bullets and aliens 
+#         self.bullets.empty()
+#         self.aliens.empty()
+
+#         # Create the new fleet and center the rocket 
+#         self._create_fleet()
+#         self.rocket.center_ship()
+
+
+#     def _fire_bullet(self):
+#         """Create a new bullet and add it to the bullets group."""
+#         if len(self.bullets) < self.setting.bullet_allowed:
+#             new_bullet = Bullet(self)
+#             self.bullets.add(new_bullet)
+
+#     def _update_bullet(self):
+#         # Update bullet positions
+#         self.bullets.update()
+
+#         # Get rid of bullets that have disappeared.
+#         for bullet in self.bullets.copy():
+#             if bullet.rect.left >= self.screen.get_rect().right:
+#                 self.bullets.remove(bullet)
+            
+#         self._check_bullet_alien_collisions()
+
+#     def _check_bullet_alien_collisions(self):
+#         """Respond to bullet-alien collisions."""
+#         # Remove any bullets and aliens that have collided.
+#         collisions = pygame.sprite.groupcollide(
+#             self.bullets, self.aliens, True, True)
+        
+#         if not self.aliens:
+#             # Destroy existing bullets and create new fleet.
+#             self.bullets.empty()
+#             self._create_fleet()
+#             self.setting.increase_speed()
+    
+#     def _create_fleet(self):
+#         """Create a grid of aliens in columns starting at the right end."""
+#         alien = Alien(self)
+#         alien_width, alien_height = alien.rect.size
+
+#         screen_width = self.setting.screen_width
+#         screen_height = self.setting.screen_height
+
+#         left_margin = self.rocket.rect.right + 50
+
+#         # Start from right side with padding of one alien width
+#         start_x = screen_width - alien_width - 20
+
+#         # Loop columns from right to left
+#         current_x = start_x
+#         while current_x > left_margin:
+#             current_y = alien_height  
+#             while current_y < (screen_height - alien_height):
+#                 self._create_alien(current_x, current_y)
+#                 current_y += 2 * alien_height  
+#             current_x -= 2 * alien_width  
+    
+#     def _create_alien(self, x, y):
+#         """Create an alien and place it in the fleet."""
+#         new_alien = Alien(self)
+#         new_alien.y = y 
+#         new_alien.rect.x = x 
+#         new_alien.rect.y = y 
+#         self.aliens.add(new_alien)
+
+#     def _update_aliens(self):
+#         """Check if the fleet is at an edge, then update positions."""
+#         self._check_fleet_edges()
+#         self.aliens.update()
+
+#         # Look for alien-ship collisions 
+#         if pygame.sprite.spritecollideany(
+#             self.rocket, self.aliens, pygame.sprite.collide_mask):
+#             self._ship_hit()            
+            
+#         # Look for aliens hitting the left end of the screen. 
+#         self._check_aliens_left()
+
+#     def _check_fleet_edges(self):
+#         """Respond appropriately if any alien have reached an edge."""
+#         for alien in self.aliens.sprites():
+#             if alien.check_edges():
+#                 self._change_fleet_direction()
+#                 break
+
+#     def _change_fleet_direction(self):
+#         """Drop the entire fleet and change the fleet's direction."""
+#         for alien in self.aliens.sprites():
+#             alien.rect.x -= self.setting.fleet_drop_speed
+#         self.setting.fleet_direction *= -1
+
+#     def _check_aliens_left(self):
+#         """Check if any aliens have reached the right end of the screen."""
+#         for alien in self.aliens.sprites():
+#             if alien.rect.left < 0:
+#                 # Treat this the same as if the ship got hit 
+#                 self._ship_hit()
+#                 break 
+        
+#     def _ship_hit(self):
+#         """Respond to the ship being hit by an alien."""
+#         if self.stats.ships_left > 0:
+#             # Decrement ships_left
+#             self.stats.ships_left -= 1 
+
+#             # Get rid of any remaining bullets and aliens 
+#             self.bullets.empty()
+#             self.aliens.empty()
+
+#             # Create a new fleet and center the ship 
+#             self._create_fleet()
+#             self.rocket.center_ship()
+
+#             # pause
+#             sleep(2.0)
+#         else:
+#             self.game_active = False
+#             self.mode_slected = False
+#             pygame.mouse.set_visible(True)
+
+
+#     def _update_screen(self):
+#         """Draw image at the screen and flip to the new screen."""
+#         self.screen.fill(self.setting.bg_color)
+#         for bullet in self.bullets.sprites():
+#             bullet.blit_bullet()
+#         self.rocket.blitme()
+#         self.aliens.draw(self.screen)
+
+#         if not self.game_active:
+#             if not self.mode_slected:
+#                 # Show only mode buttons 
+#                 self.easy_button.draw_button(-150)
+#                 self.medium_button.draw_button()
+#                 self.difficult_button.draw_button(150)
+#             else:
+#                 self.play_button.draw_button()
+
+#         pygame.display.flip()
+
+# if __name__ == '__main__':
+#     rocket = RocketGame()
+#     rocket.run_game()
 
 # -----------------------------------------------------------------------------
 
@@ -5082,113 +5861,113 @@ import pygame
 # 14.5 All- time High Socre 
 
 
-import sys 
-from time import sleep
-import json
-from pathlib import Path
+# import sys 
+# from time import sleep
+# import json
+# from pathlib import Path
 
-import pygame
+# import pygame
 
-from settings import Setting
-from game_stats import GameStats
-from scoreboard import Scoreboard
-from button import Button
-from ship import Ship
-from bullet import Bullet
-from alien import Alien
+# from settings import Setting
+# from game_stats import GameStats
+# from scoreboard import Scoreboard
+# from button import Button
+# from ship import Ship
+# from bullet import Bullet
+# from alien import Alien
 
 
-class AlienInvasion:
-    """Overall class to manage game assets and behavior."""
+# class AlienInvasion:
+#     """Overall class to manage game assets and behavior."""
 
-    def __init__(self):
-        """Initialize the game, and create game resources."""
-        pygame.init()
-        self.clock = pygame.time.Clock()
-        self.settings = Setting()
+#     def __init__(self):
+#         """Initialize the game, and create game resources."""
+#         pygame.init()
+#         self.clock = pygame.time.Clock()
+#         self.settings = Setting()
 
-        self.screen = pygame.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height))
-        pygame.display.set_caption("Alien Invasion")
+#         self.screen = pygame.display.set_mode(
+#             (self.settings.screen_width, self.settings.screen_height))
+#         pygame.display.set_caption("Alien Invasion")
 
-        # Create an instance to store game statistics.
-        # Create a Scoreboard
-        self.stats = GameStats(self)
-        self.sb = Scoreboard(self)
+#         # Create an instance to store game statistics.
+#         # Create a Scoreboard
+#         self.stats = GameStats(self)
+#         self.sb = Scoreboard(self)
 
-        self.ship = Ship(self)
-        self.bullets = pygame.sprite.Group()
-        self.aliens = pygame.sprite.Group()
+#         self.ship = Ship(self)
+#         self.bullets = pygame.sprite.Group()
+#         self.aliens = pygame.sprite.Group()
 
-        self._create_fleet()
+#         self._create_fleet()
 
-        # Start Alien Invasion in an inactive state.
-        self.game_active = False
+#         # Start Alien Invasion in an inactive state.
+#         self.game_active = False
 
-        # Make the Play Button. 
-        self.play_button = Button(self, "PLAY!")
+#         # Make the Play Button. 
+#         self.play_button = Button(self, "PLAY!")
 
-    def run_game(self):
-        """Start the main loop for the game."""
-        while True:
-            self._check_events()
+#     def run_game(self):
+#         """Start the main loop for the game."""
+#         while True:
+#             self._check_events()
 
-            if self.game_active:
-                self.ship.update()
-                self._update_bullets()
-                self._update_aliens()
+#             if self.game_active:
+#                 self.ship.update()
+#                 self._update_bullets()
+#                 self._update_aliens()
 
-            self._update_screen()
-            self.clock.tick(60)
+#             self._update_screen()
+#             self.clock.tick(60)
 
-    def _check_events(self):
-        """Respond to keypresses and mouse events."""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self._close_game()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
-            elif event.type == pygame.KEYDOWN:
-                self._check_keydown_events(event)
-            elif event.type == pygame.KEYUP:
-                self._check_keyup_events(event)
+#     def _check_events(self):
+#         """Respond to keypresses and mouse events."""
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 self._close_game()
+#             elif event.type == pygame.MOUSEBUTTONDOWN:
+#                 mouse_pos = pygame.mouse.get_pos()
+#                 self._check_play_button(mouse_pos)
+#             elif event.type == pygame.KEYDOWN:
+#                 self._check_keydown_events(event)
+#             elif event.type == pygame.KEYUP:
+#                 self._check_keyup_events(event)
 
     
-    def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clicks Play."""
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
-            # Reset the game setting 
-            self.settings.initialize_dynamic_settings()
+#     def _check_play_button(self, mouse_pos):
+#         """Start a new game when the player clicks Play."""
+#         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+#         if button_clicked and not self.game_active:
+#             # Reset the game setting 
+#             self.settings.initialize_dynamic_settings()
 
-            # Reset the game statistics 
-            self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
-            self.game_active = True
-            # Hide the mosue cursor 
-            pygame.mouse.set_visible(False)
+#             # Reset the game statistics 
+#             self.stats.reset_stats()
+#             self.sb.prep_score()
+#             self.sb.prep_level()
+#             self.sb.prep_ships()
+#             self.game_active = True
+#             # Hide the mosue cursor 
+#             pygame.mouse.set_visible(False)
 
-            # Get rid of any remaining Bullets and aliens 
-            self.bullets.empty()
-            self.aliens.empty()
+#             # Get rid of any remaining Bullets and aliens 
+#             self.bullets.empty()
+#             self.aliens.empty()
 
-            # Create the new fleet and center the ship 
-            self._create_fleet()
-            self.ship.center_ship()
+#             # Create the new fleet and center the ship 
+#             self._create_fleet()
+#             self.ship.center_ship()
 
 
-    def _check_keydown_events(self, event):
-        """Respond to keypresses."""
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = True
-        elif event.key == pygame.K_q:
-            self._close_game()
-        elif event.key == pygame.K_SPACE:
+#     def _check_keydown_events(self, event):
+#         """Respond to keypresses."""
+#         if event.key == pygame.K_RIGHT:
+#             self.ship.moving_right = True
+#         elif event.key == pygame.K_LEFT:
+#             self.ship.moving_left = True
+#         elif event.key == pygame.K_q:
+#             self._close_game()
+#         elif event.key == pygame.K_SPACE:
 #             self._fire_bullet()            
 
 #     def _check_keyup_events(self, event):
@@ -5351,5 +6130,608 @@ class AlienInvasion:
 #     ai.run_game()
 
 # -----------------------------------------------------------------------------
+# Exercises 
 
-# That's all about the game!
+
+import sys
+from time import sleep
+from pathlib import Path
+import json
+
+import pygame
+import pygame.font
+from pygame.sprite import Sprite
+
+class Setting:
+    """Make setting for the game rocket."""
+    
+    def __init__(self):
+        """Initialize game settings."""
+        # Screen Setting 
+        self.screen_width = 1200
+        self.screen_height = 700
+        self.bg_color = (5, 10, 30)
+
+        # Ship Setting 
+        self.ship_speed = 1.5
+        self.ship_limit = 3
+
+        # Bullet Settings 
+        self.bullet_speed = 2.0
+        self.bullet_allowed = 3
+
+        # Alien settings 
+        self.alien_speed = 1.5
+        self.alien_frequency = 0.008
+        self.fleet_drop_speed = 10
+        # fleet direction of 1 represent bottom; -1 represent top 
+        self.fleet_direction = 1
+        self.alien_point = 50
+
+        # How quickly the game speeds up 
+        self.speed_scale = 1.3
+
+        self.initialize_dynamic_settings()
+    
+    def initialize_dynamic_settings(self):
+        # Initialize settings that change throughout the game.
+        self.ship_speed = 1.5
+        self.bullet_speed = 2.0
+        self.alien_speed = 1.5
+
+        # Fleet direction of 1 represent botton, -1 represent top 
+
+    def change_speed(self, speed_sacle=1.0):
+        """Change the speed for medium, difficult mode."""
+        self.alien_speed *= int(speed_sacle)
+        self.ship_speed *= int(speed_sacle)
+        self.bullet_speed *= int(speed_sacle)
+
+    def increase_speed(self):
+        """Increase speed setting."""
+        self.ship_speed *= self.speed_scale
+        self.bullet_speed *= self.speed_scale
+        self.alien_speed *= self.speed_scale
+
+class GameStats:
+    """Track statistics for rocke game."""
+
+    def __init__(self, rc_game):
+        """Initialize statistics."""
+        self.setting = rc_game.setting
+        self.reset_stats()
+        # Highest score should never be reset 
+        self.high_score = self.get_saved_high_score()
+
+    def get_saved_high_score(self):
+        """Get saved the high score."""
+        path = Path('rc_game_high_score.json')
+        try:
+            content = path.read_text()
+            high_score = json.loads(content)
+            return high_score
+        except FileNotFoundError:
+            return 0
+    
+    def reset_stats(self):
+        """Initialize statistics that can change during the game."""
+        self.ships_left = self.setting.ship_limit
+        self.score = 0
+        self.level = 1
+
+class Button:
+    """A class to build buttons for the game."""
+    
+    def __init__(self, rc_game, msg):
+        """Initialize button attributes."""
+        self.screen = rc_game.screen
+        self.screen_rect = self.screen.get_rect()
+
+        # Set the dimensions and properties of the button 
+        self.width, self.height = 200, 50
+        self.button_color = (40, 40, 80)
+        self.text_color = (255, 255, 255)
+        self.font = pygame.font.SysFont(None, 48)
+
+        # Build the button's rect object  
+        self.rect = pygame.Rect(0, 0 , self.width, self.height)
+
+        # The button message needs to be prepped only once 
+        self._prep_msg(msg)        
+    
+    
+    def _prep_msg(self, msg):
+        """Turn msg into a rendered image and center text"""
+        self.msg_image = self.font.render(msg, True, 
+                        self.text_color, self.button_color)
+        self.msg_image_rect = self.msg_image.get_rect()
+
+    def draw_button(self, pixels=0):
+        """Draw blank button and then draw message."""
+        self.rect.center = self.screen_rect.center 
+        self.rect.centery += int(pixels)
+        self.screen.fill(self.button_color, self.rect)
+        self.msg_image_rect.center = self.rect.center
+        self.screen.blit(self.msg_image, self.msg_image_rect)
+
+
+class Bullet(Sprite):
+    """A class manage bullets fired from the ship."""
+    
+    def __init__(self, rc_game):
+        super().__init__()
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+        
+        # Load the image and get its rect 
+        self.bullet_image = pygame.image.load('images/bullet_red.bmp')
+        self.bullet_image_size = pygame.transform.scale(self.bullet_image, (30, 25))
+        self.rect = self.bullet_image_size.get_rect()
+        self.rect.midleft = rc_game.rocket.rect.midleft
+        self.rect.x += 100
+
+        # Stor the bullet's position as a float.
+        self.x = float(self.rect.x)
+
+    def update(self):
+        """Move the bullet up the screen."""
+        # Update the exact position of the bullet.
+        self.x += self.setting.bullet_speed
+        # Update the rect position
+        self.rect.x = self.x
+    
+    def blit_bullet(self):
+        """Draw the image to the screen."""
+        self.screen.blit(self.bullet_image_size, self.rect)
+
+class Rocket:
+    """A class to manage the rocket."""
+
+    def __init__(self, rc_game):
+        """Initialize the rocket and set tis starting position."""
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+        self.screen_rect = rc_game.screen.get_rect()
+
+        # Load the iamge and ge its rect 
+        self.image = pygame.image.load('images/fighter_plane.bmp')
+        self.image_rotate = pygame.transform.rotate(self.image, -90)
+        self.image_resize = pygame.transform.scale(self.image_rotate, (125, 100))
+        self.mask = pygame.mask.from_surface(self.image_resize)
+        self.rect = self.image_resize.get_rect()
+
+
+        # Start new ship at the center of the screen 
+        self.rect.midleft = self.screen_rect.midleft
+
+        # Store a float for the ship's exact vartical position
+        self.y = float(self.rect.y)
+
+        # Movement flag; start with a ship that's not moving
+        self.moving_up = False
+        self.moving_down = False
+
+    def update(self):
+        """Update the ship's position based on the movement flag."""
+        # Update the ship's x and y value, not the rect 
+        if self.moving_up and self.rect.top > 0:
+            self.y -= self.setting.ship_speed
+        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+            self.y += self.setting.ship_speed
+
+        # Update rect object from slef.x
+        self.rect.y = self.y 
+
+    def center_ship(self):
+        """Center the ship on the screen."""
+        self.rect.midleft = self.screen_rect.midleft
+        self.y = float(self.rect.y)
+    
+    def blitme(self):
+        """Draw the image at its current loaction."""
+        self.screen.blit(self.image_resize, self.rect)
+
+
+
+class Alien(Sprite):
+    """A class to represent a single alien in the fleet."""
+
+    def __init__(self, rc_game):
+        """Initialize the alien and set its starting position."""
+        super().__init__()
+        self.screen = rc_game.screen
+        self.setting = rc_game.setting
+
+        # Load the alien image and set its rect attribute 
+        self.image = pygame.image.load('images/ufo.bmp')
+        self.image = pygame.transform.scale(self.image, (80, 80))
+        self.rect = self.image.get_rect()
+
+        # Start each new alien near the top left of the screen 
+        screen_rect = self.screen.get_rect()
+        self.rect.x = screen_rect.right - self.rect.width * 2  
+        self.rect.y = self.rect.height                        
+
+
+        # Store the alien's exact vertical position
+        self.y = float(self.rect.y)
+    
+    def check_edges(self):
+        """Returen True if alien is at edge of screen."""
+        screen_rect = self.screen.get_rect()
+        return(
+            self.rect.top <= 0
+            or self.rect.bottom >= screen_rect.bottom
+            or self.rect.left <= 0
+            or self.rect.right >= screen_rect.right
+        )
+
+    
+    def update(self):
+        """Move the alien to the top of bottom."""
+        self.y += self.setting.alien_speed * self.setting.fleet_direction
+        self.rect.y = self.y
+
+class ScoreBoard:
+    """A class to report scoring information."""
+
+    def __init__(self, rc_game):
+        """Initialize score keeping attributes."""
+        self.rc_game = rc_game
+        self.screen = rc_game.screen
+        self.screen_rect = self.screen.get_rect()
+        self.setting = rc_game.setting
+        self.stats = rc_game.stats
+
+        # Font setting for scoring information
+        self.text_color = (255, 255, 255)
+        self.font = pygame.font.SysFont(None, 32)
+
+        # Prepare the inital score image 
+        self.prep_score()
+        self.prep_high_score()
+        self.prep_level()
+        self.prep_ships()
+
+    def prep_score(self):
+        """Turn the score into a rendered image."""
+        rounded_score = round(self.stats.score, -1)
+        score_str = f"Score: {rounded_score:,}"
+        self.score_image = self.font.render(score_str, True, self.text_color)
+
+        # Dipaly the score at the top right to the screen.
+        self.score_rect = self.score_image.get_rect()
+        self.score_rect.topright = self.screen_rect.topright
+    
+    def prep_high_score(self):
+        """Turn the high score into a rendered image."""
+        high_score = round(self.stats.high_score, -1)
+        high_score_str = f"High Score: {high_score:,}"
+        self.high_score_imgae = self.font.render(high_score_str, True, self.text_color)
+
+        # Display the score at the center x to the screen .
+        self.high_score_rect = self.high_score_imgae.get_rect()
+        self.high_score_rect.centerx = self.screen_rect.centerx
+        self.high_score_rect.top = self.score_rect.top
+
+    def check_high_score(self):
+        """Check to see if there's new high score."""
+        if self.stats.score > self.stats.high_score:
+            self.stats.high_score = self.stats.score
+            self.prep_high_score()
+        
+    def prep_level(self):
+        """Turn the level into render image."""
+        level_str = str(self.stats.level)
+        level_str = f"Level: {level_str}"
+        self.level_image = self.font.render(level_str, True, self.text_color)
+
+        # Display the level below the score 
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right
+        self.level_rect.top = self.score_rect.bottom + 10
+
+    def prep_ships(self):
+        """Show how many ships are left."""
+        heart_image = pygame.image.load('images/heart.png')
+        self.heart_image = pygame.transform.scale(heart_image, (32, 32))
+
+    def show_score(self):
+        """Draw hearts, scores, and level to the scree."""
+        self.screen.blit(self.score_image, self.score_rect)
+        self.screen.blit(self.high_score_imgae, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
+        for i in range(self.stats.ships_left):
+            x = 10 + i * (self.heart_image.get_width() + 10)
+            self.screen.blit(self.heart_image, (x,10))
+
+class RocketGame:
+    """Model for a rocket game and it's resources."""
+
+    def __init__(self):
+        """Initialize the game and attributes for the game."""
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.setting = Setting()
+
+        self.screen = pygame.display.set_mode((
+            self.setting.screen_width, self.setting.screen_height))
+        self.screen_width = self.screen.get_rect().width
+        self.screen_height = self.screen.get_rect().height
+        pygame.display.set_caption('Rocket Shooter')
+
+        # Create an instance to store game statistics and score board
+        self.stats = GameStats(self)
+        self.sb = ScoreBoard(self)
+
+        self.rocket = Rocket(self)
+        self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
+
+        # Start Rocket shooter in an inactive state 
+        self.game_active = False 
+        self.speed_scale = 1.0
+        self.mode_slected = False
+
+        # Make the play Button 
+        self.play_button = Button(self, "PLAY!")
+        self.easy_button = Button(self, "Easy")
+        self.medium_button = Button(self, "Medium")
+        self.difficult_button = Button(self, "Difficult")
+
+    def run_game(self):
+        """Start the Main Loop for the Game."""
+        while True:
+            self._check_events()
+            
+            if self.game_active:
+                self.rocket.update()
+                self._update_bullet()
+                self._update_aliens()
+                
+            self._update_screen()
+            self.clock.tick(60)
+
+    def _check_events(self):
+        """Respond to key presses."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+                self._check_easy_button(mouse_pos)
+                self._check_medium_button(mouse_pos)
+                self._check_difficult_button(mouse_pos)
+            elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+
+    def _check_keydown_events(self, event):
+        """Respond to key pressed."""
+        if event.key == pygame.K_UP:
+            self.rocket.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.rocket.moving_down = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _check_keyup_events(self, event):
+        """Respond to key released."""
+        if event.key == pygame.K_UP:
+            self.rocket.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.rocket.moving_down = False
+
+    def _check_easy_button(self, mouse_pos):
+        """Go into the easy mode when the player clicks Easy."""
+        if (self.easy_button.rect.collidepoint(mouse_pos) 
+            and not self.game_active
+            and not self.mode_slected):
+            self.speed_scale = 1.0
+            self.mode_slected = True
+
+    def _check_medium_button(self, mouse_pos):
+        """Go into the easy mode when the player clicks Easy."""
+        if (self.medium_button.rect.collidepoint(mouse_pos) 
+            and not self.game_active
+            and not self.mode_slected):
+            self.speed_scale = 2.5
+            self.mode_slected = True
+
+    def _check_difficult_button(self, mouse_pos):
+        """Go into the easy mode when the player clicks Easy."""
+        if (self.difficult_button.rect.collidepoint(mouse_pos) 
+            and not self.game_active
+            and not self.mode_slected):
+            self.speed_scale = 3.5
+            self.mode_slected = True
+    
+    def _check_play_button(self, mouse_pos):
+        """Start new game when the player clicks Play."""
+        play_button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if play_button_clicked and not self.game_active and self.mode_slected:
+            self._start_game()
+        
+    def _start_game(self):
+        """Do this thing to restart the game."""
+        # Reset the game setting 
+        self.setting.initialize_dynamic_settings()
+        self.setting.change_speed(self.speed_scale)
+
+        # Reset the game statistics 
+        self.stats.reset_stats()
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
+        self.game_active = True
+        self.mode_slected = False
+
+        # Hide the mouse cursor 
+        pygame.mouse.set_visible(False)
+
+        # Get rid of any remaining Bullets and aliens 
+        self.bullets.empty()
+        self.aliens.empty()
+
+        # Create the new fleet and center the rocket 
+        self._create_fleet()
+        self.rocket.center_ship()
+
+
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        if len(self.bullets) < self.setting.bullet_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullet(self):
+        # Update bullet positions
+        self.bullets.update()
+
+        # Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.rect.left >= self.screen.get_rect().right:
+                self.bullets.remove(bullet)
+            
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collisions."""
+        # Remove any bullets and aliens that have collided.
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True)
+        
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.setting.alien_point * len(aliens)
+                self.sb.prep_score()
+                self.sb.check_high_score()
+        
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet.
+            self.bullets.empty()
+            self._create_fleet()
+            self.setting.increase_speed()
+
+            self.stats.level += 1
+            self.sb.prep_level()
+    
+    def _create_fleet(self):
+        """Create a grid of aliens in columns starting at the right end."""
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+
+        screen_width = self.setting.screen_width
+        screen_height = self.setting.screen_height
+
+        left_margin = self.rocket.rect.right + 50
+
+        # Start from right side with padding of one alien width
+        start_x = screen_width - alien_width - 20
+
+        # Loop columns from right to left
+        current_x = start_x
+        while current_x > left_margin:
+            current_y = alien_height  
+            while current_y < (screen_height - alien_height):
+                self._create_alien(current_x, current_y)
+                current_y += 2 * alien_height  
+            current_x -= 2 * alien_width  
+    
+    def _create_alien(self, x, y):
+        """Create an alien and place it in the fleet."""
+        new_alien = Alien(self)
+        new_alien.y = y 
+        new_alien.rect.x = x 
+        new_alien.rect.y = y 
+        self.aliens.add(new_alien)
+
+    def _update_aliens(self):
+        """Check if the fleet is at an edge, then update positions."""
+        self._check_fleet_edges()
+        self.aliens.update()
+
+        # Look for alien-ship collisions 
+        if pygame.sprite.spritecollideany(
+            self.rocket, self.aliens, pygame.sprite.collide_mask):
+            self._ship_hit()            
+            
+        # Look for aliens hitting the left end of the screen. 
+        self._check_aliens_left()
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any alien have reached an edge."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet's direction."""
+        for alien in self.aliens.sprites():
+            alien.rect.x -= self.setting.fleet_drop_speed
+        self.setting.fleet_direction *= -1
+
+    def _check_aliens_left(self):
+        """Check if any aliens have reached the right end of the screen."""
+        for alien in self.aliens.sprites():
+            if alien.rect.left < 0:
+                # Treat this the same as if the ship got hit 
+                self._ship_hit()
+                break 
+        
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+        if self.stats.ships_left > 0:
+            # Decrement ships_left
+            self.stats.ships_left -= 1 
+            self.sb.prep_ships()
+
+            # Get rid of any remaining bullets and aliens 
+            self.bullets.empty()
+            self.aliens.empty()
+
+            # Create a new fleet and center the ship 
+            self._create_fleet()
+            self.rocket.center_ship()
+
+            # pause
+            sleep(1)
+        else:
+            self.game_active = False
+            self.game_over = True
+            self.mode_slected = False
+            pygame.mouse.set_visible(True)
+
+
+    def _update_screen(self):
+        """Draw image at the screen and flip to the new screen."""
+        self.screen.fill(self.setting.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.blit_bullet()
+        self.rocket.blitme()
+        self.aliens.draw(self.screen)
+        self.sb.show_score()
+
+        if not self.game_active:
+            if not self.mode_slected:
+                # Show only mode buttons 
+                self.easy_button.draw_button(-150)
+                self.medium_button.draw_button()
+                self.difficult_button.draw_button(150)
+            else:
+                self.play_button.draw_button()
+
+        pygame.display.flip()
+
+if __name__ == '__main__':
+    rocket = RocketGame()
+    rocket.run_game()
+
+
